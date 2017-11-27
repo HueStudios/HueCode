@@ -96,79 +96,33 @@ public class MethodDeclarationNode : Node
 public class Plug
 {
 	public Node owner;
-	public List<Plug> LinkedTo = new List<Plug>();
-	public bool CanBeMultiple;
-	public string Caption;
+	public List<Plug> linkedTo = new List<Plug>();
+	public bool canBeMultiple;
+	public string caption;
 	public System.Type type;
-	public Plug (Node owner, List<Plug> LinkedTo, System.Type type, string Caption, bool CanBeMultiple)
+	public Plug (Node owner, List<Plug> linkedTo, System.Type type, string caption, bool canBeMultiple)
 	{
-		LinkedTo = new List<Plug> ();
+		linkedTo = new List<Plug> ();
 		this.owner = owner;
-		this.LinkedTo = LinkedTo;
+		this.linkedTo = linkedTo;
 		this.type = type;
-		this.Caption = Caption;
-		this.CanBeMultiple = CanBeMultiple;
+		this.caption = caption;
+		this.canBeMultiple = canBeMultiple;
 	}
 	public string GetRepresentationOfChildren ()
 	{
-		if (LinkedTo.Count == 0)
+		if (linkedTo.Count == 0)
 			return "";
 		int limit;
-		if (CanBeMultiple)
-			limit = LinkedTo.Count;
+		if (canBeMultiple)
+			limit = linkedTo.Count;
 		else
 			limit = 1;
-		string Final = "";
+		string final = "";
 		for (int i = 0; i < limit; i++)
 		{
-			Final += "\n" + LinkedTo [i].owner.GetRepresentation();
+			final += "\n" + linkedTo [i].owner.GetRepresentation();
 		}
-		return Final;
-	}
-}
-
-
-
-public class Utils {
-	public static string GetCSharpRepresentation( Type t, bool trimArgCount ) {
-		if( t.IsGenericType ) {
-			var genericArgs = t.GetGenericArguments().ToList();
-
-			return GetCSharpRepresentation( t, trimArgCount, genericArgs );
-		}
-
-		return t.Name;
-	}
-	public static string GetCSharpRepresentation( Type t, bool trimArgCount, List<Type> availableArguments ) {
-		if( t.IsGenericType ) {
-			string value = t.Name;
-			if( trimArgCount && value.IndexOf("`") > -1 ) {
-				value = value.Substring( 0, value.IndexOf( "`" ) );
-			}
-				
-			if( t.DeclaringType != null ) {
-				// This is a nested type, build the nesting type first
-				value = GetCSharpRepresentation( t.DeclaringType, trimArgCount, availableArguments ) + "+" + value;
-			}
-
-			// Build the type arguments (if any)
-			string argString = "";
-			var thisTypeArgs = t.GetGenericArguments();
-			for( int i = 0; i < thisTypeArgs.Length && availableArguments.Count > 0; i++ ) {
-				if( i != 0 ) argString += ", ";
-
-				argString += GetCSharpRepresentation( availableArguments[0], trimArgCount );
-				availableArguments.RemoveAt( 0 );
-			}
-				
-			// If there are type arguments, add them with < >
-			if( argString.Length > 0 ) {
-				value += "<" + argString + ">";
-			}
-				
-			return value;
-		}
-
-		return t.Name;
+		return final;
 	}
 }

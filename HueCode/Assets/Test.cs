@@ -14,9 +14,9 @@ public class Test : MonoBehaviour {
 		args.Add (new Argument (typeof(string[]), "args"));
 		MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", args, typeof(void));
 		MethodDeclarationNode methodnode2 = new MethodDeclarationNode("SayHi", "public static", args, typeof(void));
-		namenode.outputs [0].LinkedTo.Add(classnode.inputs [0]);
-		classnode.outputs [0].LinkedTo.Add(methodnode.inputs [0]);
-		classnode.outputs [0].LinkedTo.Add(methodnode2.inputs [0]);
+		namenode.outputs [0].linkedTo.Add(classnode.inputs [0]);
+		classnode.outputs [0].linkedTo.Add(methodnode.inputs [0]);
+		classnode.outputs [0].linkedTo.Add(methodnode2.inputs [0]);
 		Debug.Log (namenode.GetRepresentation ());
 	}
 	
