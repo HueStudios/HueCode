@@ -13,8 +13,10 @@ public class Test : MonoBehaviour {
 		ClassDeclarationNode classnode = new ClassDeclarationNode ("Test", "public");
 		args.Add (new Argument (typeof(string[]), "args"));
 		MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", args, typeof(void));
-		namenode.outputs [0].LinkedTo = classnode.inputs [0];
-		classnode.outputs [0].LinkedTo = methodnode.inputs [0];
+		MethodDeclarationNode methodnode2 = new MethodDeclarationNode("SayHi", "public static", args, typeof(void));
+		namenode.outputs [0].LinkedTo.Add(classnode.inputs [0]);
+		classnode.outputs [0].LinkedTo.Add(methodnode.inputs [0]);
+		classnode.outputs [0].LinkedTo.Add(methodnode2.inputs [0]);
 		Debug.Log (namenode.GetRepresentation ());
 	}
 	

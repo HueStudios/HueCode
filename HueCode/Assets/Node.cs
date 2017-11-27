@@ -31,12 +31,12 @@ public class NamespaceDeclarationNode : Node
 	{
 		this.caption = caption;
 		this.modifiers = modifiers;
-		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
+		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership", true));
 	}
 	public override string GetRepresentation ()
 	{
 		string final = "";
-		final = modifiers + " namespace " + caption + " {\n" + outputs [0].LinkedTo.owner.GetRepresentation () + "\n}"; 
+		final = modifiers + " namespace " + caption + " {" + outputs [0].GetRepresentationOfChildren()  + "\n}"; 
 		return final;
 	}
 }
@@ -48,13 +48,13 @@ public class ClassDeclarationNode : Node
 	{
 		this.caption = caption;
 		this.modifiers = modifiers;
-		inputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
-		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
+		inputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership", false));
+		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership", true));
 	}
 	public override string GetRepresentation ()
 	{
 		string final = "";
-		final = modifiers + " class " + caption + " {\n" + outputs [0].LinkedTo.owner.GetRepresentation () + "\n}"; 
+		final = modifiers + " class " + caption + " {" + outputs [0].GetRepresentationOfChildren() + "\n}"; 
 		return final;
 	}
 }
@@ -69,12 +69,12 @@ public class MethodDeclarationNode : Node
 		this.caption = caption;
 		this.modifiers = modifiers;
 		this.arguments = arguments;
-		inputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
-		outputs.Add (new Plug (this, null, typeof(ExecutionLink), "Execution"));
+		inputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership", true));
+		outputs.Add (new Plug (this, null, typeof(ExecutionLink), "Execution", false));
 		this.returnType = returnType;
 		foreach (Argument arg in arguments)
 		{
-			outputs.Add(new Plug (this, null, arg.type, arg.name));
+			outputs.Add(new Plug (this, null, arg.type, arg.name, false));
 		}
 	}
 	public override string GetRepresentation ()
@@ -88,7 +88,7 @@ public class MethodDeclarationNode : Node
 				argumentsString += ", ";
 			}
 		}
-		final = modifiers + " " + returnType.FullName + " " + caption + " (" + argumentsString + ") {\n" /*+ outputs [0].LinkedTo.owner.GetRepresentation ()*/  + "\n}"; 
+		final = modifiers + " " + returnType.FullName + " " + caption + " (" + argumentsString + ") {\n" + outputs [0].GetRepresentationOfChildren()  + "\n}"; 
 		return final;
 	}
 }
@@ -96,14 +96,34 @@ public class MethodDeclarationNode : Node
 public class Plug
 {
 	public Node owner;
-	public Plug LinkedTo;
+	public List<Plug> LinkedTo = new List<Plug>();
+	public bool CanBeMultiple;
 	public string Caption;
 	public System.Type type;
-	public Plug (Node owner, Plug LinkedTo, System.Type type, string Caption)
+	public Plug (Node owner, List<Plug> LinkedTo, System.Type type, string Caption, bool CanBeMultiple)
 	{
+		LinkedTo = new List<Plug> ();
 		this.owner = owner;
 		this.LinkedTo = LinkedTo;
 		this.type = type;
+		this.Caption = Caption;
+		this.CanBeMultiple = CanBeMultiple;
+	}
+	public string GetRepresentationOfChildren ()
+	{
+		if (LinkedTo.Count == 0)
+			return "";
+		int limit;
+		if (CanBeMultiple)
+			limit = LinkedTo.Count;
+		else
+			limit = 1;
+		string Final = "";
+		for (int i = 0; i < limit; i++)
+		{
+			Final += "\n" + LinkedTo [i].owner.GetRepresentation();
+		}
+		return Final;
 	}
 }
 
