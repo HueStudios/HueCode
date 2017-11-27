@@ -9,7 +9,7 @@ public class NamespaceDeclarationNode : Node
 	{
 		this.caption = caption;
 		this.modifiers = modifiers;
-		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership", true));
+		outputs.Add (new Plug (this, null, typeof(OwnershipLink).FullName, "Ownership", true));
 	}
 	public override string GetRepresentation ()
 	{

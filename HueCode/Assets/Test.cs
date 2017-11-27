@@ -11,9 +11,9 @@ public class Test : MonoBehaviour {
 	void Start () {
 		NamespaceDeclarationNode namenode = new NamespaceDeclarationNode ("HueCode", "public");
 		ClassDeclarationNode classnode = new ClassDeclarationNode ("Test", "public");
-		args.Add (new Argument (typeof(string[]), "args"));
-		MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", args, typeof(void));
-		MethodDeclarationNode methodnode2 = new MethodDeclarationNode("SayHi", "public static", args, typeof(void));
+		args.Add (new Argument (typeof(string[]).FullName, "args"));
+		MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", args, typeof(void).FullName);
+		MethodDeclarationNode methodnode2 = new MethodDeclarationNode("SayHi", "public static", args, typeof(void).FullName);
 		namenode.outputs [0].linkedTo.Add(classnode.inputs [0]);
 		classnode.outputs [0].linkedTo.Add(methodnode.inputs [0]);
 		classnode.outputs [0].linkedTo.Add(methodnode2.inputs [0]);

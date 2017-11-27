@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Argument {
-	public System.Type type;
+	public string type;
 	public string name;
-	public Argument (System.Type type, string name)
+	public Argument (string type, string name)
 	{
 		this.type = type;
 		this.name = name;

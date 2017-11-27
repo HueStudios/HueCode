@@ -5,11 +5,11 @@ using UnityEngine;
 public class Plug
 {
 	public Node owner;
-	public List<Plug> linkedTo = new List<Plug>();
+	public List<Plug> linkedTo;
 	public bool canBeMultiple;
 	public string caption;
-	public System.Type type;
-	public Plug (Node owner, List<Plug> linkedTo, System.Type type, string caption, bool canBeMultiple)
+	public string type;
+	public Plug (Node owner, List<Plug> linkedTo, string type, string caption, bool canBeMultiple)
 	{
 		linkedTo = new List<Plug> ();
 		this.owner = owner;

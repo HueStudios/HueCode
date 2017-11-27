@@ -9,8 +9,8 @@ public class ClassDeclarationNode : Node
 	{
 		this.caption = caption;
 		this.modifiers = modifiers;
-		inputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership", false));
-		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership", true));
+		inputs.Add (new Plug (this, null, typeof(OwnershipLink).FullName, "Ownership", false));
+		outputs.Add (new Plug (this, null, typeof(OwnershipLink).FullName, "Ownership", true));
 	}
 	public override string GetRepresentation ()
 	{
