@@ -51,7 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Argument.cs" />
+     <Compile Include="Assets\ClassDeclarationNode.cs" />
+     <Compile Include="Assets\MethodDeclarationNode.cs" />
+     <Compile Include="Assets\NamespaceDeclarationNode.cs" />
      <Compile Include="Assets\Node.cs" />
+     <Compile Include="Assets\Plug.cs" />
      <Compile Include="Assets\Test.cs" />
      <Compile Include="Assets\Types.cs" />
  <Reference Include="Facebook.Unity.Settings">
