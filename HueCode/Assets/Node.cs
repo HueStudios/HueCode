@@ -5,8 +5,8 @@ using System;
 using System.Linq;
 
 public abstract class Node {
-	public List<Plug> inputs;
-	public List<Plug> outputs;
+	public List<Plug> inputs = new List<Plug>();
+	public List<Plug> outputs = new List<Plug>();
 	public string caption = "Generic Node";
 	public abstract string GetRepresentation();
 }
@@ -24,17 +24,49 @@ public class Argument {
 	}
 }
 
+public class NamespaceDeclarationNode : Node
+{
+	public string modifiers;
+	public NamespaceDeclarationNode(string caption, string modifiers)
+	{
+		this.caption = caption;
+		this.modifiers = modifiers;
+		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
+	}
+	public override string GetRepresentation ()
+	{
+		string final = "";
+		final = modifiers + " namespace " + caption + " {\n" + outputs [0].LinkedTo.owner.GetRepresentation () + "\n}"; 
+		return final;
+	}
+}
+
+public class ClassDeclarationNode : Node
+{
+	public string modifiers;
+	public ClassDeclarationNode(string caption, string modifiers)
+	{
+		this.caption = caption;
+		this.modifiers = modifiers;
+		inputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
+		outputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
+	}
+	public override string GetRepresentation ()
+	{
+		string final = "";
+		final = modifiers + " class " + caption + " {\n" + outputs [0].LinkedTo.owner.GetRepresentation () + "\n}"; 
+		return final;
+	}
+}
+
 public class MethodDeclarationNode : Node
 {
 	public System.Type returnType;
-	public string methodName;
 	public string modifiers;
 	public List<Argument> arguments;
-	public MethodDeclarationNode(string methodName, string modifiers, List<Argument> arguments, System.Type returnType)
+	public MethodDeclarationNode(string caption, string modifiers, List<Argument> arguments, System.Type returnType)
 	{
-		inputs = new List<Plug> ();
-		outputs = new List<Plug> ();
-		this.methodName = methodName;
+		this.caption = caption;
 		this.modifiers = modifiers;
 		this.arguments = arguments;
 		inputs.Add (new Plug (this, null, typeof(OwnershipLink), "Ownership"));
@@ -56,7 +88,7 @@ public class MethodDeclarationNode : Node
 				argumentsString += ", ";
 			}
 		}
-		final = modifiers + " " + returnType.FullName + " " + methodName + " (" + argumentsString + ") {" + outputs [0].LinkedTo.owner.GetRepresentation () + "}"; 
+		final = modifiers + " " + returnType.FullName + " " + caption + " (" + argumentsString + ") {\n" /*+ outputs [0].LinkedTo.owner.GetRepresentation ()*/  + "\n}"; 
 		return final;
 	}
 }

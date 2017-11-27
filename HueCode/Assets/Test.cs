@@ -9,21 +9,13 @@ public class Test : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		NamespaceDeclarationNode namenode = new NamespaceDeclarationNode ("HueCode", "public");
+		ClassDeclarationNode classnode = new ClassDeclarationNode ("Test", "public");
 		args.Add (new Argument (typeof(string[]), "args"));
-		MethodDeclarationNode node = new MethodDeclarationNode("Main", "public static", args, typeof(void));
-		Debug.Log (node.GetRepresentation ());
-		List<Type> list = new List<Type>();
-		foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
-		{
-			foreach (Type t in ass.GetExportedTypes())
-			{
-				if (t.IsEnum)
-				{
-					list.Add(t);
-					Debug.Log (t);
-				}
-			}
-		}
+		MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", args, typeof(void));
+		namenode.outputs [0].LinkedTo = classnode.inputs [0];
+		classnode.outputs [0].LinkedTo = methodnode.inputs [0];
+		Debug.Log (namenode.GetRepresentation ());
 	}
 	
 	// Update is called once per frame
