@@ -152,6 +152,10 @@ MonoBehaviour:
     type: 2}
   inputPlugs: []
   outputPlugs: []
+  Icons:
+  - {fileID: 21300000, guid: 095097f8bdb7f48eab51b9a14ede772c, type: 3}
+  - {fileID: 21300000, guid: 7cece8b9024704105b223f462c72a61c, type: 3}
+  - {fileID: 21300000, guid: 15a35850244f64248a8e02aec8a1f32d, type: 3}
 --- !u!114 &114350718288157164
 MonoBehaviour:
   m_ObjectHideFlags: 1
