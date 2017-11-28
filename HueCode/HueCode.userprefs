@@ -1,0 +1,19 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/NodeRepresenter.cs">
+    <Files>
+      <File FileName="Assets/Frontend/NodeRepresenter.cs" Line="40" Column="85" />
+      <File FileName="Assets/Backend/Node.cs" Line="8" Column="22" />
+      <File FileName="Assets/Backend/NamespaceDeclarationNode.cs" Line="4" Column="22" />
+      <File FileName="Assets/Backend/MethodDeclarationNode.cs" Line="4" Column="22" />
+      <File FileName="Assets/Backend/ClassDeclarationNode.cs" Line="4" Column="22" />
+      <File FileName="Assets/Backend/Argument.cs" Line="4" Column="22" />
+      <File FileName="Assets/Backend/Test.cs" Line="15" Column="3" />
+      <File FileName="Assets/Backend/Plug.cs" Line="36" Column="16" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -51,9 +51,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Node.cs" />
-     <Compile Include="Assets\Test.cs" />
-     <Compile Include="Assets\Types.cs" />
+     <Compile Include="Assets\Backend\Argument.cs" />
+     <Compile Include="Assets\Backend\ClassDeclarationNode.cs" />
+     <Compile Include="Assets\Backend\MethodDeclarationNode.cs" />
+     <Compile Include="Assets\Backend\NamespaceDeclarationNode.cs" />
+     <Compile Include="Assets\Backend\Node.cs" />
+     <Compile Include="Assets\Backend\Plug.cs" />
+     <Compile Include="Assets\Backend\Test.cs" />
+     <Compile Include="Assets\Backend\Types.cs" />
+     <Compile Include="Assets\Draggable.cs" />
+     <Compile Include="Assets\Frontend\NodeRepresenter.cs" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>/home/juan/Projects/HueCode/HueCode/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
