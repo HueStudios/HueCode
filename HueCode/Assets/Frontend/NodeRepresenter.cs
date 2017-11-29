@@ -10,6 +10,7 @@ public class NodeRepresenter : MonoBehaviour {
 	public GameObject baseOutputPlug;
 	public List<GameObject> inputPlugs;
 	public List<GameObject> outputPlugs;
+	public List<Sprite> Icons;
 	// Use this for initialization
 	void Start () {
 		MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", new List<Argument>() {new Argument(typeof(string[]).FullName, "args")}, typeof(void).FullName);
@@ -19,6 +20,16 @@ public class NodeRepresenter : MonoBehaviour {
 
 	public void Initialize ()
 	{
+		Image nodeIcon = transform.Find ("TitleBox/NodeIcon").GetComponent<Image>();
+		if (representating.GetType () == typeof(MethodDeclarationNode)) {
+			nodeIcon.sprite = Icons [0];
+		}
+		if (representating.GetType () == typeof(ClassDeclarationNode)) {
+			nodeIcon.sprite = Icons [1];
+		}
+		if (representating.GetType () == typeof(NamespaceDeclarationNode)) {
+			nodeIcon.sprite = Icons [2];
+		}
 		int sizeToUse = representating.inputs.Count >= representating.outputs.Count ? representating.inputs.Count : representating.outputs.Count;
 		float sizeY = 25 + sizeToUse * 25;
 		RectTransform thisTransform = GetComponent<RectTransform>();

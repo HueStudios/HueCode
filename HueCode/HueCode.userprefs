@@ -1,15 +1,18 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/NodeRepresenter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/ContextMenuCreator.cs">
     <Files>
-      <File FileName="Assets/Frontend/NodeRepresenter.cs" Line="40" Column="85" />
-      <File FileName="Assets/Backend/Node.cs" Line="8" Column="22" />
-      <File FileName="Assets/Backend/NamespaceDeclarationNode.cs" Line="4" Column="22" />
-      <File FileName="Assets/Backend/MethodDeclarationNode.cs" Line="4" Column="22" />
-      <File FileName="Assets/Backend/ClassDeclarationNode.cs" Line="4" Column="22" />
-      <File FileName="Assets/Backend/Argument.cs" Line="4" Column="22" />
-      <File FileName="Assets/Backend/Test.cs" Line="15" Column="3" />
-      <File FileName="Assets/Backend/Plug.cs" Line="36" Column="16" />
+      <File FileName="Assets/Frontend/NodeRepresenter.cs" Line="23" Column="78" />
+      <File FileName="Assets/Backend/Node.cs" Line="1" Column="1" />
+      <File FileName="Assets/Backend/NamespaceDeclarationNode.cs" Line="1" Column="1" />
+      <File FileName="Assets/Backend/MethodDeclarationNode.cs" Line="1" Column="1" />
+      <File FileName="Assets/Backend/ClassDeclarationNode.cs" Line="1" Column="1" />
+      <File FileName="Assets/Backend/Argument.cs" Line="1" Column="1" />
+      <File FileName="Assets/Backend/Test.cs" Line="1" Column="1" />
+      <File FileName="Assets/Backend/Plug.cs" Line="1" Column="1" />
+      <File FileName="Assets/Draggable.cs" Line="1" Column="1" />
+      <File FileName="Assets/Frontend/ContextMenu.cs" Line="6" Column="2" />
+      <File FileName="Assets/Frontend/ContextMenuCreator.cs" Line="18" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
