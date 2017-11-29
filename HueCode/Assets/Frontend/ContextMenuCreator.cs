@@ -15,10 +15,16 @@ public class ContextMenuCreator : MonoBehaviour {
 		if (Input.GetMouseButtonDown (1)) {
 			Vector2 menuPosition = Input.mousePosition;
 			Vector2 fixedPosition = menuPosition + new Vector2 (menu.GetComponent<RectTransform> ().sizeDelta.x / 2, -menu.GetComponent<RectTransform> ().sizeDelta.y / 2);
-			Debug.Log(new Vector2 (menu.GetComponent<RectTransform> ().sizeDelta.x / 2, menu.GetComponent<RectTransform> ().sizeDelta.x / 2));
 			Destroy (mainMenu);
 			mainMenu = CreateMenu (fixedPosition);
+			mainMenu.GetComponent<ContextMenu> ().AddElement ("Create new node...", NewNode);
 		}
+	}
+
+	void NewNode (ContextMenu menu)
+	{
+		Debug.Log (":0");
+		menu.CloseMenu ();
 	}
 
 	public GameObject CreateMenu (Vector2 position)
