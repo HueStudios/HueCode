@@ -62,6 +62,7 @@
      <Compile Include="Assets\Frontend\ContextMenu.cs" />
      <Compile Include="Assets\Frontend\ContextMenuCreator.cs" />
      <Compile Include="Assets\Frontend\ContextMenuInstance.cs" />
+     <Compile Include="Assets\Frontend\DefaultContextMenu.cs" />
      <Compile Include="Assets\Frontend\Draggable.cs" />
      <Compile Include="Assets\Frontend\NodeRepresenter.cs" />
  <Reference Include="Facebook.Unity.Settings">
