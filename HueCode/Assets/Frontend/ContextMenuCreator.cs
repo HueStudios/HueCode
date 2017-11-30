@@ -9,6 +9,7 @@ public class ContextMenuCreator : MonoBehaviour {
 		GameObject menuInstance = GameObject.Instantiate (menu);
 		menuInstance.transform.SetParent (GameObject.Find("Canvas").transform);
 		menuInstance.GetComponent<RectTransform> ().anchoredPosition = position;
+		menuInstance.transform.SetParent (GameObject.Find("MainContent").transform);
 		return menuInstance;
 	}
 }
