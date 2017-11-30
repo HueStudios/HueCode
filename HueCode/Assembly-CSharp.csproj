@@ -59,11 +59,11 @@
      <Compile Include="Assets\Backend\Plug.cs" />
      <Compile Include="Assets\Backend\Test.cs" />
      <Compile Include="Assets\Backend\Types.cs" />
-     <Compile Include="Assets\Frontend\ContextMenu.cs" />
      <Compile Include="Assets\Frontend\ContextMenuCreator.cs" />
-     <Compile Include="Assets\Frontend\ContextMenuInstance.cs" />
      <Compile Include="Assets\Frontend\DefaultContextMenu.cs" />
      <Compile Include="Assets\Frontend\Draggable.cs" />
+     <Compile Include="Assets\Frontend\ListMenu.cs" />
+     <Compile Include="Assets\Frontend\ListMenuInstance.cs" />
      <Compile Include="Assets\Frontend\NodeRepresenter.cs" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>/home/juan/Projects/HueCode/HueCode/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>

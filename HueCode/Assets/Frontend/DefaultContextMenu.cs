@@ -18,11 +18,11 @@ public class DefaultContextMenu : MonoBehaviour {
 			Vector2 fixedPosition = menuPosition + new Vector2 (creator.menu.GetComponent<RectTransform> ().sizeDelta.x / 2, -creator.menu.GetComponent<RectTransform> ().sizeDelta.y / 2);
 			Destroy (mainMenu);
 			mainMenu = creator.CreateMenu (fixedPosition);
-			mainMenu.GetComponent<ContextMenu> ().AddElement ("Create new node...", NewNode);
+            mainMenu.GetComponent<ListMenu> ().AddElement ("Create new node...", NewNode);
 		}
 	}
 
-	void NewNode (ContextMenu menu)
+    void NewNode (ListMenu menu)
 	{
 		Debug.Log (":0");
 		menu.CloseMenu ();
