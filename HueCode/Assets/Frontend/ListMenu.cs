@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System;
 
 public class ListMenu : MonoBehaviour {
-	public GameObject contextMenuElement;
+    public GameObject listMenuElement;
 	public List<GameObject> elements = new List<GameObject>();
 	public Transform elementContainer;
 	// Use this for initialization
@@ -19,13 +19,14 @@ public class ListMenu : MonoBehaviour {
 
     public void AddElement(string caption, Action<ListMenu> toExecute)
 	{
-		GameObject thisElement = GameObject.Instantiate (contextMenuElement);
+		GameObject thisElement = GameObject.Instantiate (listMenuElement);
 		thisElement.transform.SetParent(elementContainer);
 		elements.Add (thisElement);
 		Text elementText = thisElement.transform.Find ("Text").gameObject.GetComponent<Text> ();
 		elementText.text = caption;
 		thisElement.GetComponent<ListMenuInstance> ().toExecute = toExecute;
 		thisElement.GetComponent<ListMenuInstance> ().holderMenu = gameObject;
+
 	}
 
 	public void CloseMenu ()
