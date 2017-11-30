@@ -13,9 +13,8 @@ public class NodeRepresenter : MonoBehaviour {
 	public List<Sprite> Icons;
 	// Use this for initialization
 	void Start () {
-		MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", new List<Argument>() {new Argument(typeof(string[]).FullName, "args")}, typeof(void).FullName);
-		representating = methodnode;
-		Initialize ();
+		//MethodDeclarationNode methodnode = new MethodDeclarationNode("Main", "public static", new List<Argument>() {new Argument(typeof(string[]).FullName, "args")}, typeof(void).FullName);
+        //representating = methodnode;
 	}
 
 	public void Initialize ()
