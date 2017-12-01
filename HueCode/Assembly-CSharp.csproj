@@ -64,6 +64,7 @@
      <Compile Include="Assets\Frontend\DefaultContextMenu.cs" />
      <Compile Include="Assets\Frontend\Draggable.cs" />
      <Compile Include="Assets\Frontend\ListMenu.cs" />
+     <Compile Include="Assets\Frontend\ListMenuFilter.cs" />
      <Compile Include="Assets\Frontend\ListMenuInstance.cs" />
      <Compile Include="Assets\Frontend\NodeCreationPanel.cs" />
      <Compile Include="Assets\Frontend\NodeRepresenter.cs" />
