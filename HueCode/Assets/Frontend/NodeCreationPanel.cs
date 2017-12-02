@@ -30,10 +30,11 @@ public class NodeCreationPanel : MonoBehaviour {
     {
         thisMenu = GetComponent<ListMenu>();
         newNodePosition = Input.mousePosition;
-		/*foreach (GameObject g in thisMenu.elements)
-		{
-			Destroy(g);
-		}*/
+		if (thisMenu) {
+			foreach (GameObject g in thisMenu.elements) {
+				Destroy (g);
+			}
+		}
         thisMenu.AddElement("Class declaration", CreateClassDeclarationNode);
         thisMenu.AddElement("Namespace declaration", CreateNamespaceDeclarationNode);
         thisMenu.AddElement("Method declaration", CreateMethodDeclarationNode);
