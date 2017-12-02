@@ -1,18 +1,20 @@
-﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/ListMenuFilter.cs">
+﻿<Properties StartupConfiguration="{68D216E6-831B-4C70-58E1-35944B550BB4}|Unit Tests">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/DropdownMenuElement.cs">
     <Files>
       <File FileName="Assets/Frontend/ContextMenuCreator.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/DefaultContextMenu.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/ListMenu.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/ListMenuInstance.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/PanelDisablerButton.cs" Line="1" Column="1" />
-      <File FileName="Assets/Frontend/NodeCreationPanel.cs" Line="32" Column="38" />
+      <File FileName="Assets/Frontend/NodeCreationPanel.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/NodeRepresenter.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/BackgroundClickHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets/Frontend/ListMenuFilter.cs" Line="5" Column="1" />
+      <File FileName="Assets/Frontend/ListMenuFilter.cs" Line="1" Column="1" />
+      <File FileName="Assets/Frontend/DropdownMenuCreator.cs" Line="20" Column="1" />
+      <File FileName="Assets/Frontend/DropdownMenuElement.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
