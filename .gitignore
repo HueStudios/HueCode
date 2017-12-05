@@ -1,9 +1,12 @@
-/[Ll]ibrary/
-/[Tt]emp/
+/metadata/*
+/[Tt]emp/*
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
 /Assets/AssetStoreTools*
+
+*.info
+*.log
 
 *.bin
 
