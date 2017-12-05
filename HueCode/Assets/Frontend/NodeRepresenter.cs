@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -36,7 +37,7 @@ public class NodeRepresenter : MonoBehaviour {
 		Text nodeTitle = transform.Find ("TitleBox/NodeTitle").GetComponent<Text> ();
 		nodeTitle.text = representating.caption;
 		for (int i = 0; i < representating.inputs.Count; i++) {
-			GameObject plugInstance = GameObject.Instantiate (baseInputPlug);
+			GameObject plugInstance = Instantiate (baseInputPlug);
 			inputPlugs.Add (plugInstance);
 			plugInstance.transform.SetParent (transform);
 			plugInstance.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0, -35 - (25 * i));

@@ -1,17 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/DropdownMenuElement.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/DefaultContextMenu.cs">
     <Files>
       <File FileName="Assets/Frontend/ContextMenuCreator.cs" Line="1" Column="1" />
-      <File FileName="Assets/Frontend/DefaultContextMenu.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/ListMenu.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/ListMenuInstance.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/PanelDisablerButton.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/NodeCreationPanel.cs" Line="1" Column="1" />
-      <File FileName="Assets/Frontend/NodeRepresenter.cs" Line="1" Column="1" />
+      <File FileName="Assets/Frontend/NodeRepresenter.cs" Line="20" Column="2" />
       <File FileName="Assets/Frontend/BackgroundClickHandler.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/ListMenuFilter.cs" Line="1" Column="1" />
       <File FileName="Assets/Frontend/DropdownMenuCreator.cs" Line="1" Column="1" />
-      <File FileName="Assets/Frontend/DropdownMenuElement.cs" Line="24" Column="54" />
+      <File FileName="Assets/Frontend/DropdownMenuElement.cs" Line="30" Column="1" />
+      <File FileName="Assets/Frontend/NodeRightClickHandler.cs" Line="8" Column="74" />
+      <File FileName="Assets/Frontend/Draggable.cs" Line="18" Column="22" />
+      <File FileName="Assets/Frontend/DefaultContextMenu.cs" Line="5" Column="50" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

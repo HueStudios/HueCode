@@ -15,6 +15,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 		
 	}
 	public void OnBeginDrag(PointerEventData eventData) {
+		Debug.Log("Drag!");
 		Delta = this.transform.position - (Vector3)eventData.position;
 	}
 
