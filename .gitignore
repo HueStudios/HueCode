@@ -1,3 +1,6 @@
+temp/
+metadata/
+ShaderCache/
 /metadata/*
 /[Tt]emp/*
 /[Oo]bj/
