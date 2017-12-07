@@ -72,6 +72,7 @@
      <Compile Include="Assets\Frontend\NodeRepresenter.cs" />
      <Compile Include="Assets\Frontend\NodeRightClickHandler.cs" />
      <Compile Include="Assets\Frontend\PanelDisablerButton.cs" />
+     <Compile Include="Assets\Frontend\PropertiesMenuController.cs" />
  <Reference Include="Facebook.Unity.Settings">
  <HintPath>/home/juan/Projects/HueCode/HueCode/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>

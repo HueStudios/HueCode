@@ -8,6 +8,7 @@ public class DefaultContextMenu : MonoBehaviour {
 	public List<Action<ListMenu>> newElementsActions = new List<Action<ListMenu>>();
     public GameObject nodeCreationPanel;
 	public GameObject mainMenu;
+	public GameObject nodeToEdit;
 	public ContextMenuCreator creator;
     public Vector2 fixedPosition;
 	// Use this for initialization
