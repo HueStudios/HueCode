@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DefaultContextMenu : MonoBehaviour {
+	public List<string> newElementsText = new List<string>();
+	public List<Action<ListMenu>> newElementsActions = new List<Action<ListMenu>>();
     public GameObject nodeCreationPanel;
 	public GameObject mainMenu;
+	public GameObject nodeToEdit;
 	public ContextMenuCreator creator;
     public Vector2 fixedPosition;
 	// Use this for initialization
@@ -20,6 +24,12 @@ public class DefaultContextMenu : MonoBehaviour {
 			Destroy (mainMenu);
 			mainMenu = creator.CreateMenu (fixedPosition);
             mainMenu.GetComponent<ListMenu> ().AddElement ("Create new node...", NewNode);
+			for (int i = 0; i < newElementsText.Count; i++)
+			{
+				mainMenu.GetComponent<ListMenu>().AddElement(newElementsText[i], newElementsActions[i]);
+			}
+			newElementsText = new List<string>();
+			newElementsActions = new List<Action<ListMenu>>();
 		}
         /*if (Input.GetMouseButtonDown(0))
         {
