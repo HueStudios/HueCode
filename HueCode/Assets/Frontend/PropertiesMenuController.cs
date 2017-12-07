@@ -8,6 +8,7 @@ public class PropertiesMenuController : MonoBehaviour {
 	public GameObject listPropertie;
 	public GameObject nodeRepresenterToEdit;
 	public GameObject propertieEditPanel;
+	public Transform propertieListHolder;
 	List<GameObject> CurrentElements = new List<GameObject>();
 	// Use this for initialization
 	void Start () {
