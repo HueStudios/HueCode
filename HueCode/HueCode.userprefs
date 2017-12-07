@@ -1,9 +1,10 @@
 ﻿<Properties StartupConfiguration="{68D216E6-831B-4C70-58E1-35944B550BB4}|Unit Tests">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/DefaultContextMenu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Frontend/ArgumentOptionAdder.cs">
     <Files>
       <File FileName="Assets/Frontend/PropertiesMenuController.cs" Line="11" Column="39" />
       <File FileName="Assets/Frontend/NodeRightClickHandler.cs" Line="15" Column="142" />
       <File FileName="Assets/Frontend/DefaultContextMenu.cs" Line="11" Column="31" />
+      <File FileName="Assets/Frontend/ArgumentOptionAdder.cs" Line="27" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
