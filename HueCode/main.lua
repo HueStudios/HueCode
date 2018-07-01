@@ -25,6 +25,10 @@ r["DATA_CONNECTION"] = 62
 g["DATA_CONNECTION"] = 172
 b["DATA_CONNECTION"] = 150
 
+local selectorR = 176
+local selectorG = 176
+local selectorB = 176
+
 function love.load()
 	love.keyboard.setKeyRepeat(true)
 	love.graphics.setFont(love.graphics.newFont("NotoSans-Regular.ttf", 18))
@@ -39,6 +43,44 @@ local isDragging = false
 local dragDeltaX = 0
 local dragDeltaY = 0
 local dragNode = nil
+local interacted = false
+
+function love.mousereleased(x, y, button)
+	if button == 1 then
+	   interacted = true
+	end
+ end
+
+function addOption (text, r, g, b, forceSide, callback)
+	local option = {}
+	option.text = text
+	option.r = r 
+	option.g = g
+	option.b = b
+	option.forceSide = forceSide
+	option.callback = callback
+	options[#options + 1] = option
+end
+
+function clearOptions ()
+	options = {}
+end
+
+
+function showMenuForPlugs (node)
+	clearOptions()
+	for k,v in pairs (node.nodeInternal.plugs) do
+		side = nil
+		if v.output == true then
+			side = "right"
+		else
+			side = "left"
+		end
+		addOption(k, r[v.type], g[v.type], b[v.type], side, function () end)
+	end
+	isInCircularMenu = true
+end 
+
 
 function nodeMouseHandler ()
 	selectedAnything = false
@@ -77,6 +119,9 @@ function nodeMouseHandler ()
 			if love.mouse.isDown(1) then
 				mouseEvent = true
 			end
+			if interacted then
+				showMenuForPlugs(v)
+			end
 		else
 			v.hovering = false
 			if love.mouse.isDown(1) then
@@ -84,6 +129,7 @@ function nodeMouseHandler ()
 			end 
 		end
 	end
+	interacted = false
 	if selectedAnything == false and mouseEvent then
 		for j,other in ipairs (drawNodes) do
 			other.selected = false
@@ -103,21 +149,6 @@ function love.update(dt)
 	lastMouseX = currentMouseX
 	lastMouseY = currentMouseY
 	camera:setPosition(x, y)
-end
-
-function addOption (text, r, g, b, forceSide, callback)
-	local option = {}
-	option.text = text
-	option.r = r 
-	option.g = g
-	option.b = b
-	option.forceSide = forceSide
-	option.callback = callback
-	options[#options + 1] = option
-end
-
-function clearOptions ()
-	options = {}
 end
 
 function drawAllNodes ()
@@ -250,7 +281,7 @@ end
 
 function addNewNodeMenu ()
 	clearOptions()
-	local color = 0.67
+	local color = 176
 	addOption("Value node", color, color, color, nil, function () createNode(nodes.VALUE_NODE) end)
 	addOption("Function node", color, color, color, nil, function () createNode(nodes.FUNCTION_NODE) end)
 	addOption("Return node", color, color, color, nil, function () createNode(nodes.RETURN_NODE) end)
@@ -269,6 +300,17 @@ end
 
 function drawCircularMenu ()
 	love.graphics.push()
+	love.graphics.setLineWidth(4)
+	local fullCircle = true
+	local numberLeft = 0
+	local numberRight = 0
+	for i,v in ipairs(options) do
+		if v.forceSide == "right" then
+			numberRight = numberRight + 1
+		elseif v.forceSide == "left" then
+			numberLeft = numberLeft + 1
+		end
+	end
 	love.graphics.clear(0.11, 0.11, 0.11, 0.5)
 	local referenceSize = 0
 	if love.graphics.getWidth() > love.graphics.getHeight() then 
@@ -288,6 +330,7 @@ function drawCircularMenu ()
 	end
 	local inSelect = false
 	size = 30
+	love.graphics.setColor(selectorR/256, selectorG/256, selectorB/256)
 	if distance > 50 then
 		inSelect = true
 		size = 25
@@ -306,61 +349,165 @@ function drawCircularMenu ()
 		love.graphics.rotate(math.pi/2)
 	end
 	if inSelect == false then
-		if love.mouse.isDown(1) then
+		if interacted then
 			isInCircularMenu = false
 		end
 	end
 	love.graphics.pop()
-	--love.graphics.circle("line", 0, 0, radiusToUse)
 	local fullCircle = math.pi * 2 
-	local eachDiv = fullCircle / #options
 	local offset = (fullCircle/360)*2
-	for i, v in ipairs(options) do
-		local abegin = (i - 1) * eachDiv + offset
-		local aend = (i) * eachDiv - offset
-		local add = 0
-		if (radians > abegin and radians < aend) and inSelect then
-			add = 15 
-			if love.mouse.isDown(1) then
-				isInCircularMenu = false
-				v.callback()
+	if (numberLeft == 0 or numberRight == 0) then
+		--love.graphics.circle("line", 0, 0, radiusToUse)
+		local eachDiv = fullCircle / #options
+		love.graphics.rotate(math.pi/2)
+		for i, v in ipairs(options) do
+			local abegin = (i - 1) * eachDiv + offset
+			local aend = (i) * eachDiv - offset
+			local add = 0
+			mouseX, mouseY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
+			local angle = math.atan2(mouseY, mouseX)
+			--print(angle)
+			local radians = angle
+			if radians < 0 then
+				radians = (math.pi - math.abs(radians)) + math.pi
+			end
+			if (radians > abegin and radians < aend) and inSelect then
+				add = 15 
+				selectorR = v.r
+				selectorG = v.g
+				selectorB = v.b
+				if interacted then
+					isInCircularMenu = false
+					v.callback()
+				end
+			end
+			love.graphics.setColor(v.r/256, v.g/256, v.b/256, 1)
+			love.graphics.arc("line", "open", 0, 0, radiusToUse + add, abegin, aend, 30)
+			love.graphics.arc("line", "open", 0, 0, 45, abegin + offset, aend - offset, 30)
+			love.graphics.push()
+			local textAngle = (i-1) * eachDiv + eachDiv / 2
+			love.graphics.rotate((i-1) * eachDiv + eachDiv / 2)
+			love.graphics.translate(0, -12)
+			if textAngle > 0 and textAngle < math.pi then
+				love.graphics.scale(-1, -1)
+				love.graphics.translate(0-radiusToUse - 50 - add, -23)
+				--love.graphics.rotate(math.pi)
+			end
+			love.graphics.printf(v.text, 30, 0, radiusToUse - 10 + add, "center")
+			love.graphics.pop()
+		end
+	else
+		local radiansPerLeft = math.pi/numberLeft
+		local radiansPerRight = math.pi/numberRight
+		local optionsDrawnL = 1
+		local optionsDrawnR = 1
+		for l, v in pairs(options) do
+			if v.forceSide == "right" then
+				local j = optionsDrawnR
+				love.graphics.push()
+				love.graphics.rotate(-math.pi/2)
+				mouseX, mouseY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
+				local angle = math.atan2(mouseY, mouseX)
+				--print(angle)
+				local radians = angle
+				if radians < 0 then
+					radians = (math.pi - math.abs(radians)) + math.pi
+				end
+				local abegin = ((j - 1) * radiansPerRight) + offset
+				local aend = ((j) * radiansPerRight) - offset
+				local add = 0
+				if (radians > abegin and radians < aend) and inSelect then
+					add = 15
+					selectorR = v.r
+					selectorG = v.g
+					selectorB = v.b
+					if interacted then
+						isInCircularMenu = false
+						v.callback()
+					end
+				end
+				love.graphics.setColor(v.r/256, v.g/256, v.b/256, 1)
+				love.graphics.arc("line", "open", 0, 0, radiusToUse + add, abegin, aend, 30)
+				love.graphics.arc("line", "open", 0, 0, 45, abegin + offset, aend - offset, 30)
+				eachDiv = radiansPerRight
+				love.graphics.push()
+				local textAngle = (j-1) * eachDiv + eachDiv / 2
+				love.graphics.rotate((j-1) * eachDiv + eachDiv / 2)
+				love.graphics.translate(0, -12)
+				--if textAngle > math.pi/2 and textAngle < 3*math.pi/2 then
+					--love.graphics.scale(-1, -1)
+					--love.graphics.translate(0-radiusToUse - 50 - add, -23)
+					--love.graphics.rotate(math.pi)
+				--end
+				love.graphics.printf(v.text, 30, 0, radiusToUse - 10 + add, "center")
+				optionsDrawnR = optionsDrawnR + 1
+				love.graphics.pop()
+				love.graphics.pop()
+			else
+				local j = optionsDrawnL
+				love.graphics.push()
+				love.graphics.rotate(math.pi/2)
+				mouseX, mouseY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
+				local angle = math.atan2(mouseY, mouseX)
+				--print(angle)
+				local radians = angle
+				if radians < 0 then
+					radians = (math.pi - math.abs(radians)) + math.pi
+				end
+				local abegin = ((j - 1) * radiansPerLeft) + offset
+				local aend = ((j) * radiansPerLeft) - offset
+				local add = 0
+				if (radians > abegin and radians < aend) and inSelect then
+					add = 15
+					selectorR = v.r
+					selectorG = v.g
+					selectorB = v.b
+					if interacted then
+						isInCircularMenu = false
+						v.callback()
+					end
+				end
+				love.graphics.setColor(v.r/256, v.g/256, v.b/256, 1)
+				love.graphics.arc("line", "open", 0, 0, radiusToUse + add, abegin, aend, 30)
+				love.graphics.arc("line", "open", 0, 0, 45, abegin + offset, aend - offset, 30)
+				eachDiv = radiansPerLeft
+				love.graphics.push()
+				local textAngle = (j-1) * eachDiv + eachDiv / 2
+				love.graphics.rotate((j-1) * eachDiv + eachDiv / 2)
+				love.graphics.translate(0, -12)
+				if textAngle > 0 and textAngle < math.pi then
+					love.graphics.scale(1, 1)
+					love.graphics.translate(0+radiusToUse + 50 + add, 23)
+					love.graphics.rotate(math.pi)
+				end
+				love.graphics.printf(v.text, 30, 0, radiusToUse - 10 + add, "center")
+				optionsDrawnL = optionsDrawnL + 1
+				love.graphics.pop()
+				love.graphics.pop()
 			end
 		end
-		love.graphics.setColor(v.r, v.g, v.b, 1)
-		love.graphics.arc("line", "open", 0, 0, radiusToUse + add, abegin, aend, 30)
-		love.graphics.arc("line", "open", 0, 0, 45, abegin + offset, aend - offset, 30)
-		love.graphics.push()
-		local textAngle = (i-1) * eachDiv + eachDiv / 2
-		love.graphics.rotate((i-1) * eachDiv + eachDiv / 2)
-		love.graphics.translate(0, -12)
-		if textAngle > math.pi/2 and textAngle < 3*math.pi/2 then
-			love.graphics.scale(-1, -1)
-			love.graphics.translate(0-radiusToUse - 50 - add, -23)
-			--love.graphics.rotate(math.pi)
-		end
-		love.graphics.printf(v.text, 30, 0, radiusToUse - 10 + add, "center")
-		love.graphics.pop()
 	end
 	love.graphics.pop()
+	interacted = false
 end
   
 function love.draw()
 	love.graphics.clear(0.137, 0.137, 0.137)
-	camera:set()
-	love.graphics.setLineWidth(2)
-	--Code goes here
-	nodeMouseHandler()
-	if love.keyboard.isDown("tab") then
-		if not isInCircularMenu then
-			newNodeX, newNodeY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
-			print(newNodeX, newNodeY)
-			addNewNodeMenu()
-		end
-	end
-	drawAllNodes()
-	camera:unset()
 	if isInCircularMenu then
 		drawCircularMenu()
+	else
+		camera:set()
+		love.graphics.setLineWidth(2)
+		--Code goes here
+		nodeMouseHandler()
+		if love.keyboard.isDown("tab") then
+			if not isInCircularMenu then
+				newNodeX, newNodeY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
+				addNewNodeMenu()
+			end
+		end
+		drawAllNodes()
+		camera:unset()
 	end
 end
 --function love.draw()

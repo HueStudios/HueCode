@@ -98,6 +98,7 @@ end
 function nodes.functionNode ()
     local node = nodes.baseNode()
     node.type = nodes.FUNCTION_NODE
+    local argsAdded = 1
     local getFunctionRepresentation = function ()
         local repr = " "
         repr = repr .. "function ("
@@ -118,12 +119,10 @@ function nodes.functionNode ()
     end
     node.plugs["value"] = nodes.newPlug(node, "VALUE_CONNECTION", getFunctionRepresentation, true)
     node.plugs["body"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.addArgument = function (name)
-        local getRepresentation = function ()
-            return name 
-        end
-        node.plugs[name] = nodes.newPlug(node, "REFERENCE_CONNECTION", getRepresentation, false)
-        return node.plugs[name]
+    node.addArgument = function ()
+        node.plugs["arg" .. argsAdded] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+        argsAdded = argsAdded + 1
+        return node.plugs["arg" .. argsAdded]
     end
     return node
 end
@@ -218,7 +217,7 @@ function nodes.genericForLoopNode ()
     node.plugs["after"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
     node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
     node.addArgument = function ()
-        node.plugs["iter" .. argsAdded] = nodes.newPlug(node, "REFERENCE_CONNECTION", false)
+        node.plugs["iter" .. argsAdded] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
         argsAdded = argsAdded + 1
         return node.plugs["iter" .. argsAdded]
     end
