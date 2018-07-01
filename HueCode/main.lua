@@ -35,6 +35,61 @@ lastMouseY = 0
 
 newNodeX = 0
 newNodeY = 0
+local isDragging = false
+local dragDeltaX = 0
+local dragDeltaY = 0
+local dragNode = nil
+
+function nodeMouseHandler ()
+	selectedAnything = false
+	mouseEvent = false
+	mouseX, mouseY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
+	if love.mouse.isDown(1) == false then isDragging = false end
+	for i,v in ipairs (drawNodes) do
+		if dragNode == v and isDragging then
+			v.x = mouseX - dragDeltaX
+			v.y = mouseY - dragDeltaY
+		end
+		distance = math.sqrt( (v.x - mouseX)*(v.x - mouseX)+(v.y - mouseY)*(v.y - mouseY) )
+		if distance < 15 then
+			love.graphics.push()
+			love.graphics.translate(v.x, v.y)
+			love.graphics.setColor(176/256,176/256,176/256, 1)
+			love.graphics.circle("fill", 0, 0, 10, 30)
+			love.graphics.pop()
+			if love.mouse.isDown(1) then
+				mouseEvent = true
+				for j,other in ipairs (drawNodes) do
+					other.selected = false
+				end
+				selectedAnything = true
+				v.selected = true
+				if isDragging == false then
+					isDragging = true
+					dragDeltaX = mouseX - v.x
+					dragDeltaY = mouseY - v.y
+					dragNode = v
+				end
+			end
+			v.hovering = false
+		elseif distance < 40 then
+			v.hovering = true
+			if love.mouse.isDown(1) then
+				mouseEvent = true
+			end
+		else
+			v.hovering = false
+			if love.mouse.isDown(1) then
+				mouseEvent = true
+			end 
+		end
+	end
+	if selectedAnything == false and mouseEvent then
+		for j,other in ipairs (drawNodes) do
+			other.selected = false
+		end
+	end
+end
 
 function love.update(dt)
 	currentMouseX = love.mouse.getX()
@@ -69,6 +124,13 @@ function drawAllNodes ()
 	for i, node in ipairs(drawNodes) do
 		love.graphics.push()
 		love.graphics.translate(node.x, node.y)
+		if node.selected then
+			love.graphics.push()
+			love.graphics.setColor(176/256,176/256,176/256, 1)
+			love.graphics.setLineWidth(1)
+			love.graphics.circle("line", 0, 0, 40, 100)
+			love.graphics.pop() 
+		end
 		--Text drawing
 		local nodeText = ""
 		local specialText = "something"
@@ -97,6 +159,11 @@ function drawAllNodes ()
 		local plugsOnRight = 0
 		local plugCount = 0
 		local offset = math.pi/360 * 10
+		if node.hovering then
+			love.graphics.setLineWidth(4)
+		else
+			love.graphics.setLineWidth(2)
+		end
 		for k, plug in pairs(node.nodeInternal.plugs) do
 			if plug.output == true then
 				plugsOnRight = plugsOnRight + 1
@@ -107,7 +174,7 @@ function drawAllNodes ()
 			end
 			if plug.output == false and plug.type == "EXECUTION_CONNECTION" then
 				love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
-				love.graphics.circle("fill", 0, 0, 7)
+				love.graphics.circle("fill", 0, 0, 7, 30)
 			end
 		end
 		if plugsOnLeft == 0 or plugsOnRight == 0 then
@@ -177,6 +244,7 @@ function createNode (type)
 	elseif type == nodes.TABLEINDEX_NODE then newNode.nodeInternal = nodes.tableIndexNode()
 	elseif type == nodes.OPERATOR_NODE then newNode.nodeInternal = nodes.operatorNode()
 	end
+	newNode.selected = true
 	drawNodes[#drawNodes + 1] = newNode
 end
 
@@ -232,6 +300,7 @@ function drawCircularMenu ()
 	end
 	love.graphics.push()
 	love.graphics.rotate(math.pi/4)
+	love.graphics.setColor(176/256,63/256,63/256, 1)
 	for i=1,4,1 do
 		love.graphics.line(0,0, 0, size)
 		love.graphics.rotate(math.pi/2)
@@ -280,6 +349,7 @@ function love.draw()
 	camera:set()
 	love.graphics.setLineWidth(2)
 	--Code goes here
+	nodeMouseHandler()
 	if love.keyboard.isDown("tab") then
 		if not isInCircularMenu then
 			newNodeX, newNodeY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
