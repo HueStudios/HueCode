@@ -29,6 +29,9 @@ local selectorR = 176
 local selectorG = 176
 local selectorB = 176
 
+local connectingPlug = nil
+local connectingNode = nil
+
 function love.load()
 	love.keyboard.setKeyRepeat(true)
 	love.graphics.setFont(love.graphics.newFont("NotoSans-Regular.ttf", 18))
@@ -76,10 +79,76 @@ function showMenuForPlugs (node)
 		else
 			side = "left"
 		end
-		addOption(k, r[v.type], g[v.type], b[v.type], side, function () end)
+		local thisfunction = function ()
+			if connectingNode == nil then
+				connectingNode = node
+				connectingPlug = k 
+			else
+				connectingNode.nodeInternal.plugs[connectingPlug].connect(v)
+				connectingNode = nil
+				connectingPlug = nil
+			end
+		end
+		addOption(k, r[v.type], g[v.type], b[v.type], side, thisfunction)
 	end
 	isInCircularMenu = true
 end 
+
+function getCoordsOfPlug (toGetnode, toGetplug)
+	local connectingNode = toGetnode
+	local connectingPlug = toGetplug
+	local startX = 0
+	local startY = 0
+	local screenX = 0
+	local screenY = 0
+	local plugsDrawnL = 1
+	local plugsDrawnR = 1
+	local plugCount = 0
+	local plugsOnLeft = 0
+	local plugsOnRight = 0
+	for k, plug in pairs(connectingNode.nodeInternal.plugs) do
+		if plug.output == true then
+			plugsOnRight = plugsOnRight + 1
+			plugCount = plugCount + 1
+		elseif plug.output == false and plug.type ~= "EXECUTION_CONNECTION" then
+			plugsOnLeft = plugsOnLeft + 1
+			plugCount = plugCount + 1
+		end
+		if plug.output == false and plug.type == "EXECUTION_CONNECTION" then
+			screenX, screenY = love.graphics.transformPoint(0, 0)
+		end
+	end
+	local radiansPerLeft = math.pi/plugsOnLeft
+	local radiansPerRight = math.pi/plugsOnRight
+	for l, plug in pairs(connectingNode.nodeInternal.plugs) do
+		if plug.output == true then
+			local j = plugsDrawnR
+			love.graphics.push()
+			love.graphics.rotate(-math.pi)
+			local abegin = ((j - 1) * radiansPerRight)
+			local aend = ((j) * radiansPerRight)
+			love.graphics.rotate((abegin + aend)/2)
+			if l == connectingPlug then
+				screenX, screenY = love.graphics.transformPoint(0, 32)
+			end
+			love.graphics.pop()		
+			plugsDrawnR = plugsDrawnR + 1
+		elseif plug.output == false and plug.type ~= "EXECUTION_CONNECTION" then
+			local j = plugsDrawnL
+			love.graphics.push()
+			love.graphics.rotate(math.pi)
+			local abegin = (j - 1) * radiansPerLeft
+			local aend = (j) * radiansPerLeft
+			love.graphics.rotate((abegin + aend)/2)
+			if l == connectingPlug then
+				screenX, screenY = love.graphics.transformPoint(0, 32)
+			end
+			love.graphics.pop()
+			plugsDrawnL = plugsDrawnL + 1
+		end
+	end
+	return screenX, screenY
+end
 
 
 function nodeMouseHandler ()
@@ -206,6 +275,7 @@ function drawAllNodes ()
 			if plug.output == false and plug.type == "EXECUTION_CONNECTION" then
 				love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
 				love.graphics.circle("fill", 0, 0, 7, 30)
+				plug.posX, plug.posY = love.graphics.transformPoint(0, 0)
 			end
 		end
 		if plugsOnLeft == 0 or plugsOnRight == 0 then
@@ -218,6 +288,11 @@ function drawAllNodes ()
 					love.graphics.rotate(math.pi/2)
 					local abegin = ((j - 1) * radiansPerPlug) + offset
 					local aend = ((j) * radiansPerPlug) - offset
+					love.graphics.push()
+					love.graphics.rotate(-math.pi/2)
+					love.graphics.rotate((abegin + aend) / 2 )
+					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
+					love.graphics.pop()
 					love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
@@ -236,6 +311,11 @@ function drawAllNodes ()
 					love.graphics.rotate(-math.pi/2)
 					local abegin = ((j - 1) * radiansPerRight) + offset
 					local aend = ((j) * radiansPerRight) - offset
+					love.graphics.push()
+					love.graphics.rotate(-math.pi/2)
+					love.graphics.rotate((abegin + aend) / 2 )
+					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
+					love.graphics.pop()
 					love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
@@ -246,6 +326,11 @@ function drawAllNodes ()
 					love.graphics.rotate(math.pi/2)
 					local abegin = (j - 1) * radiansPerLeft + offset
 					local aend = (j) * radiansPerLeft - offset
+					love.graphics.push()
+					love.graphics.rotate(-math.pi/2)
+					love.graphics.rotate((abegin + aend) / 2 )
+					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
+					love.graphics.pop()
 					love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()
@@ -254,6 +339,41 @@ function drawAllNodes ()
 			end
 		end
 		love.graphics.pop()
+	end
+	if connectingNode ~= nil then
+		love.graphics.push()
+		love.graphics.translate(connectingNode.x, connectingNode.y)
+		screenX, screenY = getCoordsOfPlug(connectingNode, connectingPlug)
+		local globalX, globalY = love.graphics.inverseTransformPoint(screenX, screenY)
+		local mouseX, mouseY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
+		love.graphics.push()
+		local colorr = r[connectingNode.nodeInternal.plugs[connectingPlug].type]
+		local colorg = g[connectingNode.nodeInternal.plugs[connectingPlug].type]
+		local colorb = b[connectingNode.nodeInternal.plugs[connectingPlug].type]
+		love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
+		love.graphics.line(globalX, globalY, mouseX, mouseY)
+		love.graphics.pop()
+		love.graphics.pop()
+	end
+	
+	for i,nodea in ipairs(drawNodes) do
+		for plugindex, pluga in pairs(nodea.nodeInternal.plugs) do
+			if pluga.connection ~= nil then
+				for j,nodeb in ipairs(drawNodes) do
+					for plugindex, plugb in pairs(nodeb.nodeInternal.plugs) do
+						if plugb == pluga.connection then
+							local tx, ty = love.graphics.inverseTransformPoint(pluga.posX, pluga.posY)
+							local rx, ry = love.graphics.inverseTransformPoint(plugb.posX, plugb.posY)
+							local colorr = r[pluga.type]
+							local colorg = g[pluga.type]
+							local colorb = b[pluga.type]
+							love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
+							love.graphics.line(tx, ty, rx, ry)
+						end
+					end
+				end
+			end
+		end
 	end
 end
 
