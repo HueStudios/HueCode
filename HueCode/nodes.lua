@@ -36,6 +36,7 @@ function nodes.holder () end
 
 function nodes.baseNode ()
     local node = {}
+    node.specialText = ""
     node.type = nil
     node.plugs = {}
     return node
@@ -48,7 +49,7 @@ function nodes.operatorNode ()
     local getRepresentation = function ()
         local repr = " ("
         repr = repr .. node.plugs["a"].connection.getTextRepresentation()
-        repr = repr .. " " .. node.operator 
+        repr = repr .. " " .. specialText
         repr = repr .. node.plugs["b"].connection.getTextRepresentation()
         repr = repr .. " )"
         return repr
@@ -148,9 +149,9 @@ function nodes.referenceNode ()
     node.reference = nil
     local getRepresentation = function ()
         if node.plugs["children"].connection == nil then
-            return " " .. node.reference
+            return " " .. node.specialText
         else
-            return node.reference .. "." .. node.plugs["children"].connection.getTextRepresentation()
+            return node.specialText .. "." .. node.plugs["children"].connection.getTextRepresentation()
         end
     end
     node.plugs["reference"] = nodes.newPlug(node, "REFERENCE_CONNECTION", getRepresentation, true)
@@ -249,7 +250,7 @@ function nodes.valueNode ()
     node.type = nodes.VALUE_NODE
     node.value = nil
     local getTextRepresentation = function ()
-        return "" .. value
+        return "" .. node.specialText
     end
     node.plugs["value"] = nodes.newPlug(node, "VALUE_CONNECTION", getTextRepresentation, true)
     return node

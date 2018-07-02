@@ -1,3 +1,4 @@
+local utf8 = require("utf8")
 
 local nodes = require("nodes")
 local camera = require("camera")
@@ -31,6 +32,8 @@ local selectorB = 176
 
 local connectingPlug = nil
 local connectingNode = nil
+
+local text = ""
 
 function love.load()
 	love.keyboard.setKeyRepeat(true)
@@ -84,76 +87,42 @@ function showMenuForPlugs (node)
 				connectingNode = node
 				connectingPlug = k 
 			else
+				if v.connection and v.connection.connection ~= nil then 
+				v.connection.connection = nil 
+				end
+				if connectingNode.nodeInternal.plugs[connectingPlug].connection and 
+				connectingNode.nodeInternal.plugs[connectingPlug].connection.connection ~= nil then
+				connectingNode.nodeInternal.plugs[connectingPlug].connection.connection = nil end
+				v.connection = nil
+				connectingNode.nodeInternal.plugs[connectingPlug].connection = nil
 				connectingNode.nodeInternal.plugs[connectingPlug].connect(v)
 				connectingNode = nil
 				connectingPlug = nil
 			end
 		end
-		if connectingNode == nil or 
-		(connectingNode.nodeInternal.plugs[connectingPlug].type == v.type and
-		connectingNode.nodeInternal.plugs[connectingPlug].output ~= v.output) then
+		local compatible = false
+		if connectingNode then
+			local target = connectingNode.nodeInternal.plugs[connectingPlug].type
+			if v.type == "EXECUTION_CONNECTION" and target.type == "EXECUTION_CONNECTION" then
+				compatible = true
+			end
+			if v.type == "DATA_CONNECTION" and target.type == "DATA_CONNECTION" then
+				compatible = true
+			end
+			if v.type == "DATA_CONNECTION" and target.type == "VALUE_CONNECTION" then
+				compatible = true
+			end
+			if v.type == "DATA_CONNECTION" and target.type == "REFERENCE_CONNECTION" then
+				compatible = true
+			end
+		end
+		if connectingNode == nil or (trueTypeC == trueTypeV and connectingNode) and
+		connectingNode.nodeInternal.plugs[connectingPlug].output ~= v.output then
 			addOption(k, r[v.type], g[v.type], b[v.type], side, thisfunction)
 		end
 	end
 	isInCircularMenu = true
 end 
-
-function getCoordsOfPlug (toGetnode, toGetplug)
-	local connectingNode = toGetnode
-	local connectingPlug = toGetplug
-	local startX = 0
-	local startY = 0
-	local screenX = 0
-	local screenY = 0
-	local plugsDrawnL = 1
-	local plugsDrawnR = 1
-	local plugCount = 0
-	local plugsOnLeft = 0
-	local plugsOnRight = 0
-	for k, plug in pairs(connectingNode.nodeInternal.plugs) do
-		if plug.output == true then
-			plugsOnRight = plugsOnRight + 1
-			plugCount = plugCount + 1
-		elseif plug.output == false and plug.type ~= "EXECUTION_CONNECTION" then
-			plugsOnLeft = plugsOnLeft + 1
-			plugCount = plugCount + 1
-		end
-		if plug.output == false and plug.type == "EXECUTION_CONNECTION" then
-			screenX, screenY = love.graphics.transformPoint(0, 0)
-		end
-	end
-	local radiansPerLeft = math.pi/plugsOnLeft
-	local radiansPerRight = math.pi/plugsOnRight
-	for l, plug in pairs(connectingNode.nodeInternal.plugs) do
-		if plug.output == true then
-			local j = plugsDrawnR
-			love.graphics.push()
-			love.graphics.rotate(-math.pi)
-			local abegin = ((j - 1) * radiansPerRight)
-			local aend = ((j) * radiansPerRight)
-			love.graphics.rotate((abegin + aend)/2)
-			if l == connectingPlug then
-				screenX, screenY = love.graphics.transformPoint(0, 32)
-			end
-			love.graphics.pop()		
-			plugsDrawnR = plugsDrawnR + 1
-		elseif plug.output == false and plug.type ~= "EXECUTION_CONNECTION" then
-			local j = plugsDrawnL
-			love.graphics.push()
-			love.graphics.rotate(math.pi)
-			local abegin = (j - 1) * radiansPerLeft
-			local aend = (j) * radiansPerLeft
-			love.graphics.rotate((abegin + aend)/2)
-			if l == connectingPlug then
-				screenX, screenY = love.graphics.transformPoint(0, 32)
-			end
-			love.graphics.pop()
-			plugsDrawnL = plugsDrawnL + 1
-		end
-	end
-	return screenX, screenY
-end
-
 
 function nodeMouseHandler ()
 	selectedAnything = false
@@ -178,6 +147,7 @@ function nodeMouseHandler ()
 					other.selected = false
 				end
 				selectedAnything = true
+				text = v.nodeInternal.specialText
 				v.selected = true
 				if isDragging == false then
 					isDragging = true
@@ -210,6 +180,10 @@ function nodeMouseHandler ()
 	end
 end
 
+function love.textinput(t)
+    text = text .. t
+end
+
 function love.update(dt)
 	currentMouseX = love.mouse.getX()
 	currentMouseY = love.mouse.getY()
@@ -229,6 +203,16 @@ function love.keypressed (key)
 		connectingNode = nil
 		connectingPlug = nil
 	end
+	if key == "backspace" then
+        -- get the byte offset to the last UTF-8 character in the string.
+        local byteoffset = utf8.offset(text, -1)
+ 
+        if byteoffset then
+            -- remove the last UTF-8 character.
+            -- string.sub operates on bytes rather than UTF-8 characters, so we couldn't do string.sub(text, 1, -2).
+            text = string.sub(text, 1, byteoffset - 1)
+        end
+    end
 end
 
 function drawAllNodes ()
@@ -241,10 +225,11 @@ function drawAllNodes ()
 			love.graphics.setLineWidth(1)
 			love.graphics.circle("line", 0, 0, 40, 100)
 			love.graphics.pop() 
+			node.nodeInternal.specialText = text
 		end
 		--Text drawing
 		local nodeText = ""
-		local specialText = "something"
+		local specialText = node.nodeInternal.specialText
 		local type = node.nodeInternal.type
 		if type == nodes.VALUE_NODE then nodeText = specialText
 		elseif type == nodes.FUNCTION_NODE then nodeText = "function ( • ) • end"
@@ -409,6 +394,7 @@ function createNode (type)
 	elseif type == nodes.OPERATOR_NODE then newNode.nodeInternal = nodes.operatorNode()
 	end
 	newNode.selected = true
+	text = newNode.nodeInternal.specialText
 	drawNodes[#drawNodes + 1] = newNode
 end
 
