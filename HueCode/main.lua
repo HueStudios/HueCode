@@ -297,6 +297,12 @@ function drawAllNodes ()
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
 					plugsDrawn = plugsDrawn + 1
+					if plugsOnLeft == 1 then
+						plug.posX, plug.posY = love.graphics.transformPoint(-32, 0)
+					end
+					if plugsOnRight == 1 then
+						plug.posX, plug.posY = love.graphics.transformPoint(32, 0)
+					end
 				end
 			end
 		else
@@ -341,21 +347,17 @@ function drawAllNodes ()
 		love.graphics.pop()
 	end
 	if connectingNode ~= nil then
-		love.graphics.push()
-		love.graphics.translate(connectingNode.x, connectingNode.y)
-		screenX, screenY = getCoordsOfPlug(connectingNode, connectingPlug)
-		local globalX, globalY = love.graphics.inverseTransformPoint(screenX, screenY)
 		local mouseX, mouseY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
 		love.graphics.push()
 		local colorr = r[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		local colorg = g[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		local colorb = b[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
-		love.graphics.line(globalX, globalY, mouseX, mouseY)
-		love.graphics.pop()
+		love.graphics.line(connectingNode.nodeInternal.plugs[connectingPlug].posX, connectingNode.nodeInternal.plugs[connectingPlug].posY, mouseX, mouseY)
 		love.graphics.pop()
 	end
 	
+	love.graphics.setLineWidth(2)
 	for i,nodea in ipairs(drawNodes) do
 		for plugindex, pluga in pairs(nodea.nodeInternal.plugs) do
 			if pluga.connection ~= nil then
