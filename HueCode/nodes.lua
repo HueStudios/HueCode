@@ -151,11 +151,11 @@ function nodes.referenceNode ()
         if node.plugs["children"].connection == nil then
             return " " .. node.specialText
         else
-            return node.specialText .. "." .. node.plugs["children"].connection.getTextRepresentation()
+            return node.plugs["children"].connection.getTextRepresentation() .. "." .. node.specialText
         end
     end
     node.plugs["reference"] = nodes.newPlug(node, "REFERENCE_CONNECTION", getRepresentation, true)
-    node.plugs["children"] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+    node.plugs["parent"] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
     return node
 end
 
@@ -261,7 +261,7 @@ function nodes.callFunctionNode ()
     node.type = nodes.CALLFUNCTION_NODE
     local argsAdded = 1
     local getFunctionRepresentation = function ()
-        local repr = ""
+        local repr = node.plugs["toCall"].getTextRepresentation()
         repr = repr .. "("
         local argCount = 1
         for k, v in pairs(node.plugs) do
@@ -276,7 +276,8 @@ function nodes.callFunctionNode ()
         repr = repr .. ")"
         return repr
     end
-    node.plugs["toCall"] = nodes.newPlug(node, "REFERENCE_CONNECTION", getFunctionRepresentation, false)
+    node.plugs["toCall"] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+    node.plugs["reference"] = nodes.newPlug(node, "REFERENCE_CONNECTION", getFunctionRepresentation, true)
     node.addArgument = function ()
         node.plugs["arg" .. argsAdded] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
         argsAdded = argsAdded + 1
@@ -307,7 +308,7 @@ function nodes.returnNode ()
     end
     node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
     node.addToReturn = function ()
-        node.plugs["toReturn" .. node.returned] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+        node.plugs["toReturn" .. node.returned] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
         return node.plugs["toReturn" .. node.returned] 
     end
     node.addToReturn()

@@ -102,7 +102,8 @@ function showMenuForPlugs (node)
 		end
 		local compatible = false
 		if connectingNode then
-			local target = connectingNode.nodeInternal.plugs[connectingPlug].type
+			local target = connectingNode.nodeInternal.plugs[connectingPlug]
+			print(target.type, v.type)
 			if v.type == "EXECUTION_CONNECTION" and target.type == "EXECUTION_CONNECTION" then
 				compatible = true
 			end
@@ -112,11 +113,17 @@ function showMenuForPlugs (node)
 			if v.type == "DATA_CONNECTION" and target.type == "VALUE_CONNECTION" then
 				compatible = true
 			end
+			if v.type == "VALUE_CONNECTION" and target.type == "VALUE_CONNECTION" then
+				compatible = true
+			end
 			if v.type == "DATA_CONNECTION" and target.type == "REFERENCE_CONNECTION" then
 				compatible = true
 			end
+			if v.type == "REFERENCE_CONNECTION" and target.type == "REFERENCE_CONNECTION" then
+				compatible = true
+			end
 		end
-		if connectingNode == nil or (trueTypeC == trueTypeV and connectingNode) and
+		if connectingNode == nil or (compatible and connectingNode) and
 		connectingNode.nodeInternal.plugs[connectingPlug].output ~= v.output then
 			addOption(k, r[v.type], g[v.type], b[v.type], side, thisfunction)
 		end
@@ -235,7 +242,7 @@ function drawAllNodes ()
 		elseif type == nodes.FUNCTION_NODE then nodeText = "function ( • ) • end"
 		elseif type == nodes.RETURN_NODE then nodeText = "return •"
 		elseif type == nodes.ASSIGN_NODE then nodeText = "• = •"
-		elseif type == nodes.REFERENCE_NODE then nodeText = "• . " .. specialText
+		elseif type == nodes.REFERENCE_NODE then nodeText = "{ • . } " .. specialText
 		elseif type == nodes.CONDITIONAL_NODE then nodeText = "if • then • else • end •"
 		elseif type == nodes.CALLFUNCTION_NODE then nodeText = "• ( • )"
 		elseif type == nodes.EVALUATE_NODE then nodeText = "do • end"
@@ -349,7 +356,8 @@ function drawAllNodes ()
 		local colorg = g[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		local colorb = b[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
-		love.graphics.line(connectingNode.nodeInternal.plugs[connectingPlug].posX, connectingNode.nodeInternal.plugs[connectingPlug].posY, mouseX, mouseY)
+		local tx, ty = love.graphics.inverseTransformPoint(connectingNode.nodeInternal.plugs[connectingPlug].posX, connectingNode.nodeInternal.plugs[connectingPlug].posY)
+		love.graphics.line(tx, ty, mouseX, mouseY)
 		love.graphics.pop()
 	end
 	
