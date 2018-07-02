@@ -89,7 +89,11 @@ function showMenuForPlugs (node)
 				connectingPlug = nil
 			end
 		end
-		addOption(k, r[v.type], g[v.type], b[v.type], side, thisfunction)
+		if connectingNode == nil or 
+		(connectingNode.nodeInternal.plugs[connectingPlug].type == v.type and
+		connectingNode.nodeInternal.plugs[connectingPlug].output ~= v.output) then
+			addOption(k, r[v.type], g[v.type], b[v.type], side, thisfunction)
+		end
 	end
 	isInCircularMenu = true
 end 
@@ -218,6 +222,13 @@ function love.update(dt)
 	lastMouseX = currentMouseX
 	lastMouseY = currentMouseY
 	camera:setPosition(x, y)
+end
+
+function love.keypressed (key) 
+	if key == "space" and connectingNode ~= nil then
+		connectingNode = nil
+		connectingPlug = nil
+	end
 end
 
 function drawAllNodes ()
