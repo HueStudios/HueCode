@@ -87,9 +87,9 @@ function nodes.conditionalNode ()
         repr = repr .. " then"
         repr = repr .. node.plugs["true"].connection.getTextRepresentation()
         repr = repr .. " else"
-        repr = repr .. node.plug["false"].connection.getTextRepresentation()
+        repr = repr .. node.plucolorScheme.green["false"].connection.getTextRepresentation()
         repr = repr .. " end"
-        repr = repr .. node.plug["after"].connection.getTextRepresentation()
+        repr = repr .. node.plucolorScheme.green["after"].connection.getTextRepresentation()
         return repr
     end
     node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)

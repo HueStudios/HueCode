@@ -1,5 +1,5 @@
 local utf8 = require("utf8")
-
+local colorScheme = require("colorScheme")
 local nodes = require("nodes")
 local camera = require("camera")
 
@@ -13,18 +13,6 @@ local drawNodes = {}
 local r = {}
 local g = {}
 local b = {}
-r[nodes.EXECUTION_CONNECTION] = 176
-g[nodes.EXECUTION_CONNECTION] = 63
-b[nodes.EXECUTION_CONNECTION] = 63
-r[nodes.VALUE_CONNECTION] =	176
-g[nodes.VALUE_CONNECTION] = 176
-b[nodes.VALUE_CONNECTION] =	176
-r[nodes.REFERENCE_CONNECTION] = 121
-g[nodes.REFERENCE_CONNECTION] = 176
-b[nodes.REFERENCE_CONNECTION] = 64
-r[nodes.DATA_CONNECTION] = 62
-g[nodes.DATA_CONNECTION] = 172
-b[nodes.DATA_CONNECTION] = 150
 
 local selectorR = 176
 local selectorG = 176
@@ -125,7 +113,7 @@ function showMenuForPlugs (node)
 		end
 		if connectingNode == nil or (compatible and connectingNode) and
 		connectingNode.nodeInternal.plugs[connectingPlug].output ~= v.output then
-			addOption(k, r[v.type], g[v.type], b[v.type], side, thisfunction)
+			addOption(k, colorScheme.red[v.type], colorScheme.green[v.type], colorScheme.blue[v.type], side, thisfunction)
 		end
 	end
 	isInCircularMenu = true
@@ -276,7 +264,7 @@ function drawAllNodes ()
 				plugCount = plugCount + 1
 			end
 			if plug.output == false and plug.type == nodes.EXECUTION_CONNECTION then
-				love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
+				love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
 				love.graphics.circle("fill", 0, 0, 7, 30)
 				plug.posX, plug.posY = love.graphics.transformPoint(0, 0)
 			end
@@ -296,7 +284,7 @@ function drawAllNodes ()
 					love.graphics.rotate((abegin + aend) / 2 )
 					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
 					love.graphics.pop()
-					love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
+					love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
 					plugsDrawn = plugsDrawn + 1
@@ -325,7 +313,7 @@ function drawAllNodes ()
 					love.graphics.rotate((abegin + aend) / 2 )
 					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
 					love.graphics.pop()
-					love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
+					love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
 					plugsDrawnR = plugsDrawnR + 1
@@ -340,7 +328,7 @@ function drawAllNodes ()
 					love.graphics.rotate((abegin + aend) / 2 )
 					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
 					love.graphics.pop()
-					love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
+					love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()
 					plugsDrawnL = plugsDrawnL + 1
@@ -352,9 +340,9 @@ function drawAllNodes ()
 	if connectingNode ~= nil then
 		local mouseX, mouseY = love.graphics.inverseTransformPoint(love.mouse.getX(), love.mouse.getY())
 		love.graphics.push()
-		local colorr = r[connectingNode.nodeInternal.plugs[connectingPlug].type]
-		local colorg = g[connectingNode.nodeInternal.plugs[connectingPlug].type]
-		local colorb = b[connectingNode.nodeInternal.plugs[connectingPlug].type]
+		local colorr = colorScheme.red[connectingNode.nodeInternal.plugs[connectingPlug].type]
+		local colorg = colorScheme.green[connectingNode.nodeInternal.plugs[connectingPlug].type]
+		local colorb = colorScheme.blue[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
 		local tx, ty = love.graphics.inverseTransformPoint(connectingNode.nodeInternal.plugs[connectingPlug].posX, connectingNode.nodeInternal.plugs[connectingPlug].posY)
 		love.graphics.line(tx, ty, mouseX, mouseY)
@@ -370,9 +358,9 @@ function drawAllNodes ()
 						if plugb == pluga.connection then
 							local tx, ty = love.graphics.inverseTransformPoint(pluga.posX, pluga.posY)
 							local rx, ry = love.graphics.inverseTransformPoint(plugb.posX, plugb.posY)
-							local colorr = r[pluga.type]
-							local colorg = g[pluga.type]
-							local colorb = b[pluga.type]
+							local colorr = colorScheme.red[pluga.type]
+							local colorg = colorScheme.green[pluga.type]
+							local colorb = colorScheme.blue[pluga.type]
 							love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
 							love.graphics.line(tx, ty, rx, ry)
 						end
