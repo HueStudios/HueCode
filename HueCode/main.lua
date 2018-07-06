@@ -133,7 +133,7 @@ function nodeMouseHandler ()
 		if distance < 15 then
 			love.graphics.push()
 			love.graphics.translate(v.x, v.y)
-			love.graphics.setColor(176/256,176/256,176/256, 1)
+			love.graphics.setColor(176,176,176, 1)
 			love.graphics.circle("fill", 0, 0, 10, 30)
 			love.graphics.pop()
 			if love.mouse.isDown(1) then
@@ -216,7 +216,7 @@ function drawAllNodes ()
 		love.graphics.translate(node.x, node.y)
 		if node.selected then
 			love.graphics.push()
-			love.graphics.setColor(176/256,176/256,176/256, 1)
+			love.graphics.setColor(176,176,176, 1)
 			love.graphics.setLineWidth(1)
 			love.graphics.circle("line", 0, 0, 40, 100)
 			love.graphics.pop() 
@@ -242,7 +242,7 @@ function drawAllNodes ()
 		end
 		love.graphics.push()
 		love.graphics.translate(0, -70)
-		love.graphics.setColor(176/256,176/256,176/256, 1)
+		love.graphics.setColor(176,176,176, 1)
 		love.graphics.printf(nodeText, -500, 0, 1000, "center")
 		love.graphics.pop()
 		--Circle drawing
@@ -264,7 +264,7 @@ function drawAllNodes ()
 				plugCount = plugCount + 1
 			end
 			if plug.output == false and plug.type == nodes.EXECUTION_CONNECTION then
-				love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
+				love.graphics.setColor(colorScheme.red[plug.type], colorScheme.green[plug.type], colorScheme.blue[plug.type], 1)
 				love.graphics.circle("fill", 0, 0, 7, 30)
 				plug.posX, plug.posY = love.graphics.transformPoint(0, 0)
 			end
@@ -284,7 +284,7 @@ function drawAllNodes ()
 					love.graphics.rotate((abegin + aend) / 2 )
 					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
 					love.graphics.pop()
-					love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
+					love.graphics.setColor(colorScheme.red[plug.type], colorScheme.green[plug.type], colorScheme.blue[plug.type], 1)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
 					plugsDrawn = plugsDrawn + 1
@@ -313,7 +313,7 @@ function drawAllNodes ()
 					love.graphics.rotate((abegin + aend) / 2 )
 					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
 					love.graphics.pop()
-					love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
+					love.graphics.setColor(colorScheme.red[plug.type], colorScheme.green[plug.type], colorScheme.blue[plug.type], 1)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
 					plugsDrawnR = plugsDrawnR + 1
@@ -328,7 +328,7 @@ function drawAllNodes ()
 					love.graphics.rotate((abegin + aend) / 2 )
 					plug.posX, plug.posY = love.graphics.transformPoint(0, 32)
 					love.graphics.pop()
-					love.graphics.setColor(colorScheme.red[plug.type]/256.0, colorScheme.green[plug.type]/256.0, colorScheme.blue[plug.type]/256.0, 255/256.0)
+					love.graphics.setColor(colorScheme.red[plug.type], colorScheme.green[plug.type], colorScheme.blue[plug.type], 1)
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()
 					plugsDrawnL = plugsDrawnL + 1
@@ -343,7 +343,7 @@ function drawAllNodes ()
 		local colorr = colorScheme.red[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		local colorg = colorScheme.green[connectingNode.nodeInternal.plugs[connectingPlug].type]
 		local colorb = colorScheme.blue[connectingNode.nodeInternal.plugs[connectingPlug].type]
-		love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
+		love.graphics.setColor(colorr, colorg, colorb, 1)
 		local tx, ty = love.graphics.inverseTransformPoint(connectingNode.nodeInternal.plugs[connectingPlug].posX, connectingNode.nodeInternal.plugs[connectingPlug].posY)
 		love.graphics.line(tx, ty, mouseX, mouseY)
 		love.graphics.pop()
@@ -361,7 +361,7 @@ function drawAllNodes ()
 							local colorr = colorScheme.red[pluga.type]
 							local colorg = colorScheme.green[pluga.type]
 							local colorb = colorScheme.blue[pluga.type]
-							love.graphics.setColor(colorr/256, colorg/256, colorb/256, 1)
+							love.graphics.setColor(colorr, colorg, colorb, 1)
 							love.graphics.line(tx, ty, rx, ry)
 						end
 					end
@@ -445,7 +445,7 @@ function drawCircularMenu ()
 	end
 	local inSelect = false
 	size = 30
-	love.graphics.setColor(selectorR/256, selectorG/256, selectorB/256)
+	love.graphics.setColor(selectorR, selectorG, selectorB)
 	if distance > 50 then
 		inSelect = true
 		size = 25
@@ -458,7 +458,7 @@ function drawCircularMenu ()
 	end
 	love.graphics.push()
 	love.graphics.rotate(math.pi/4)
-	love.graphics.setColor(176/256,63/256,63/256, 1)
+	love.graphics.setColor(176,63,63, 1)
 	for i=1,4,1 do
 		love.graphics.line(0,0, 0, size)
 		love.graphics.rotate(math.pi/2)
@@ -496,7 +496,7 @@ function drawCircularMenu ()
 					v.callback()
 				end
 			end
-			love.graphics.setColor(v.r/256, v.g/256, v.b/256, 1)
+			love.graphics.setColor(v.r, v.g, v.b, 1)
 			love.graphics.arc("line", "open", 0, 0, radiusToUse + add, abegin, aend, 30)
 			love.graphics.arc("line", "open", 0, 0, 45, abegin + offset, aend - offset, 30)
 			love.graphics.push()
@@ -541,7 +541,7 @@ function drawCircularMenu ()
 						v.callback()
 					end
 				end
-				love.graphics.setColor(v.r/256, v.g/256, v.b/256, 1)
+				love.graphics.setColor(v.r, v.g, v.b, 1)
 				love.graphics.arc("line", "open", 0, 0, radiusToUse + add, abegin, aend, 30)
 				love.graphics.arc("line", "open", 0, 0, 45, abegin + offset, aend - offset, 30)
 				eachDiv = radiansPerRight
@@ -582,7 +582,7 @@ function drawCircularMenu ()
 						v.callback()
 					end
 				end
-				love.graphics.setColor(v.r/256, v.g/256, v.b/256, 1)
+				love.graphics.setColor(v.r, v.g, v.b, 1)
 				love.graphics.arc("line", "open", 0, 0, radiusToUse + add, abegin, aend, 30)
 				love.graphics.arc("line", "open", 0, 0, 45, abegin + offset, aend - offset, 30)
 				eachDiv = radiansPerLeft
