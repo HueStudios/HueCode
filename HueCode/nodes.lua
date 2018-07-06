@@ -17,6 +17,10 @@ nodes.GENERICFORLOOP_NODE = 0xB
 nodes.OPERATOR_NODE = 0xC
 nodes.TABLEINDEX_NODE = 0xD
 
+nodes.DATA_CONNECTION = 0x1
+nodes.VALUE_CONNECTION = 0x2
+nodes.REFERENCE_CONNECTION = 0x3
+nodes.EXECUTION_CONNECTION = 0x4
 
 function nodes.newPlug (owner, type, getTextRepresentation, output)
     local plug = {}
@@ -54,9 +58,9 @@ function nodes.operatorNode ()
         repr = repr .. " )"
         return repr
     end
-    node.plugs["a"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["b"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["out"] = nodes.newPlug(node, "DATA_CONNECTION", getRepresentation, true)
+    node.plugs["a"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["b"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["out"] = nodes.newPlug(node, nodes.DATA_CONNECTION, getRepresentation, true)
     return node
 end
 
@@ -69,8 +73,8 @@ function nodes.tableIndexNode ()
         repr = repr .. "]"
         return repr
     end
-    node.plugs["index"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["reference"] = nodes.newPlug(node, "REFERENCE_CONNECTION", getRepresentation, true)
+    node.plugs["index"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["reference"] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, getRepresentation, true)
     return node
 end
 
@@ -88,11 +92,11 @@ function nodes.conditionalNode ()
         repr = repr .. node.plug["after"].connection.getTextRepresentation()
         return repr
     end
-    node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
-    node.plugs["condition"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["true"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["false"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["after"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
+    node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)
+    node.plugs["condition"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["true"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["false"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["after"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
     return node
 end
 
@@ -105,7 +109,7 @@ function nodes.functionNode ()
         repr = repr .. "function ("
         local argCount = 1
         for k, v in pairs(node.plugs) do
-            if v.type == "REFERENCE_CONNECTION" then 
+            if v.type == nodes.REFERENCE_CONNECTION then 
                 if argCount ~= 1 then
                     repr = repr .. ", "
                 end
@@ -118,10 +122,10 @@ function nodes.functionNode ()
         repr = repr .. " end"
         return repr
     end
-    node.plugs["value"] = nodes.newPlug(node, "VALUE_CONNECTION", getFunctionRepresentation, true)
-    node.plugs["body"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
+    node.plugs["value"] = nodes.newPlug(node, nodes.VALUE_CONNECTION, getFunctionRepresentation, true)
+    node.plugs["body"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
     node.addArgument = function ()
-        node.plugs["arg" .. argsAdded] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+        node.plugs["arg" .. argsAdded] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
         argsAdded = argsAdded + 1
         return node.plugs["arg" .. argsAdded]
     end
@@ -137,9 +141,9 @@ function nodes.evaluateNode ()
         repr = repr .. node.plugs['after'].connection.getTextRepresentation()
         return repr
     end
-    node.plugs["toEvaluate"] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
-    node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
-    node.plugs["after"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
+    node.plugs["toEvaluate"] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
+    node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)
+    node.plugs["after"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
     return node
 end
 
@@ -154,8 +158,8 @@ function nodes.referenceNode ()
             return node.plugs["children"].connection.getTextRepresentation() .. "." .. node.specialText
         end
     end
-    node.plugs["reference"] = nodes.newPlug(node, "REFERENCE_CONNECTION", getRepresentation, true)
-    node.plugs["parent"] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+    node.plugs["reference"] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, getRepresentation, true)
+    node.plugs["parent"] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
     return node
 end
 
@@ -177,13 +181,13 @@ function nodes.forLoopNode ()
         repr = repr .. node.plugs["after"].connection.getTextRepresentation()
         return repr
     end
-    node.plugs["counter"] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
-    node.plugs["init"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["state"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["control"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["body"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["after"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
+    node.plugs["counter"] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
+    node.plugs["init"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["state"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["control"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["body"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["after"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)
     return node
 end
 
@@ -195,7 +199,7 @@ function nodes.genericForLoopNode ()
         local repr = " for"
         local argCount = 1
         for k, v in pairs(node.plugs) do
-            if v.type == "REFERENCE_CONNECTION" then 
+            if v.type == nodes.REFERENCE_CONNECTION then 
                 if argCount ~= 1 then
                     repr = repr .. ", "
                 else
@@ -213,12 +217,12 @@ function nodes.genericForLoopNode ()
         repr = repr .. node.plugs["after"].connection.getTextRepresentation()
         return repr
     end
-    node.plugs["iterator"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["body"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["after"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
+    node.plugs["iterator"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["body"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["after"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)
     node.addArgument = function ()
-        node.plugs["iter" .. argsAdded] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+        node.plugs["iter" .. argsAdded] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
         argsAdded = argsAdded + 1
         return node.plugs["iter" .. argsAdded]
     end
@@ -238,10 +242,10 @@ function nodes.whileLoopNode ()
         repr = repr .. node.plugs["after"].connection.getTextRepresentation()
         return repr
     end
-    node.plugs["condition"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
-    node.plugs["body"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["after"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
+    node.plugs["condition"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
+    node.plugs["body"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["after"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)
     return node
 end
 
@@ -252,7 +256,7 @@ function nodes.valueNode ()
     local getTextRepresentation = function ()
         return "" .. node.specialText
     end
-    node.plugs["value"] = nodes.newPlug(node, "VALUE_CONNECTION", getTextRepresentation, true)
+    node.plugs["value"] = nodes.newPlug(node, nodes.VALUE_CONNECTION, getTextRepresentation, true)
     return node
 end
 
@@ -265,7 +269,7 @@ function nodes.callFunctionNode ()
         repr = repr .. "("
         local argCount = 1
         for k, v in pairs(node.plugs) do
-            if v.type == "REFERENCE_CONNECTION" then 
+            if v.type == nodes.REFERENCE_CONNECTION then 
                 if argCount ~= 1 then
                     repr = repr .. ", "
                 end
@@ -276,10 +280,10 @@ function nodes.callFunctionNode ()
         repr = repr .. ")"
         return repr
     end
-    node.plugs["toCall"] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
-    node.plugs["reference"] = nodes.newPlug(node, "REFERENCE_CONNECTION", getFunctionRepresentation, true)
+    node.plugs["toCall"] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
+    node.plugs["reference"] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, getFunctionRepresentation, true)
     node.addArgument = function ()
-        node.plugs["arg" .. argsAdded] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+        node.plugs["arg" .. argsAdded] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
         argsAdded = argsAdded + 1
         return node.plugs["arg" .. argsAdded]
     end
@@ -296,7 +300,7 @@ function nodes.returnNode ()
         repr = "" .. "return "
         local valueCount = 1
         for k, v in pairs(node.plugs) do
-            if v.type == "REFERENCE_CONNECTION" then
+            if v.type == nodes.REFERENCE_CONNECTION then
                 if valueCount ~= 1 then
                     repr = repr .. ", "
                 end
@@ -306,9 +310,9 @@ function nodes.returnNode ()
         end
         return repr
     end
-    node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
+    node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)
     node.addToReturn = function ()
-        node.plugs["toReturn" .. node.returned] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
+        node.plugs["toReturn" .. node.returned] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
         return node.plugs["toReturn" .. node.returned] 
     end
     node.addToReturn()
@@ -323,7 +327,7 @@ function nodes.assignNode ()
         local repr = " "
         local valueCount = 1
         for k, v in pairs(node.plugs) do
-            if v.type == "REFERENCE_CONNECTION" then
+            if v.type == nodes.REFERENCE_CONNECTION then
                 if valueCount ~= 1 then
                     repr = repr .. ", "
                 end
@@ -338,11 +342,11 @@ function nodes.assignNode ()
         end
         return repr
     end
-    node.plugs["before"] = nodes.newPlug(node, "EXECUTION_CONNECTION", getRepresentation, false)
-    node.plugs["after"] = nodes.newPlug(node, "EXECUTION_CONNECTION", nil, true)
-    node.plugs["value_or_ref"] = nodes.newPlug(node, "DATA_CONNECTION", nil, false)
+    node.plugs["before"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, getRepresentation, false)
+    node.plugs["after"] = nodes.newPlug(node, nodes.EXECUTION_CONNECTION, nil, true)
+    node.plugs["value_or_ref"] = nodes.newPlug(node, nodes.DATA_CONNECTION, nil, false)
     node.addToAssign = function ()
-        node.plugs["toAssign" .. node.assigned] = nodes.newPlug(node, "REFERENCE_CONNECTION", nil, false)
+        node.plugs["toAssign" .. node.assigned] = nodes.newPlug(node, nodes.REFERENCE_CONNECTION, nil, false)
         return node.plugs["toAssign" .. node.assigned] 
     end
     node.addToAssign()

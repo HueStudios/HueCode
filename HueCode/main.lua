@@ -13,18 +13,18 @@ local drawNodes = {}
 local r = {}
 local g = {}
 local b = {}
-r["EXECUTION_CONNECTION"] = 176
-g["EXECUTION_CONNECTION"] = 63
-b["EXECUTION_CONNECTION"] = 63
-r["VALUE_CONNECTION"] =	176
-g["VALUE_CONNECTION"] = 176
-b["VALUE_CONNECTION"] =	176
-r["REFERENCE_CONNECTION"] = 121
-g["REFERENCE_CONNECTION"] = 176
-b["REFERENCE_CONNECTION"] = 64
-r["DATA_CONNECTION"] = 62
-g["DATA_CONNECTION"] = 172
-b["DATA_CONNECTION"] = 150
+r[nodes.EXECUTION_CONNECTION] = 176
+g[nodes.EXECUTION_CONNECTION] = 63
+b[nodes.EXECUTION_CONNECTION] = 63
+r[nodes.VALUE_CONNECTION] =	176
+g[nodes.VALUE_CONNECTION] = 176
+b[nodes.VALUE_CONNECTION] =	176
+r[nodes.REFERENCE_CONNECTION] = 121
+g[nodes.REFERENCE_CONNECTION] = 176
+b[nodes.REFERENCE_CONNECTION] = 64
+r[nodes.DATA_CONNECTION] = 62
+g[nodes.DATA_CONNECTION] = 172
+b[nodes.DATA_CONNECTION] = 150
 
 local selectorR = 176
 local selectorG = 176
@@ -104,22 +104,22 @@ function showMenuForPlugs (node)
 		if connectingNode then
 			local target = connectingNode.nodeInternal.plugs[connectingPlug]
 			print(target.type, v.type)
-			if v.type == "EXECUTION_CONNECTION" and target.type == "EXECUTION_CONNECTION" then
+			if v.type == nodes.EXECUTION_CONNECTION and target.type == nodes.EXECUTION_CONNECTION then
 				compatible = true
 			end
-			if v.type == "DATA_CONNECTION" and target.type == "DATA_CONNECTION" then
+			if v.type == nodes.DATA_CONNECTION and target.type == nodes.DATA_CONNECTION then
 				compatible = true
 			end
-			if v.type == "DATA_CONNECTION" and target.type == "VALUE_CONNECTION" then
+			if v.type == nodes.DATA_CONNECTION and target.type == nodes.VALUE_CONNECTION then
 				compatible = true
 			end
-			if v.type == "VALUE_CONNECTION" and target.type == "VALUE_CONNECTION" then
+			if v.type == nodes.VALUE_CONNECTION and target.type == nodes.VALUE_CONNECTION then
 				compatible = true
 			end
-			if v.type == "DATA_CONNECTION" and target.type == "REFERENCE_CONNECTION" then
+			if v.type == nodes.DATA_CONNECTION and target.type == nodes.REFERENCE_CONNECTION then
 				compatible = true
 			end
-			if v.type == "REFERENCE_CONNECTION" and target.type == "REFERENCE_CONNECTION" then
+			if v.type == nodes.REFERENCE_CONNECTION and target.type == nodes.REFERENCE_CONNECTION then
 				compatible = true
 			end
 		end
@@ -271,11 +271,11 @@ function drawAllNodes ()
 			if plug.output == true then
 				plugsOnRight = plugsOnRight + 1
 				plugCount = plugCount + 1
-			elseif plug.output == false and plug.type ~= "EXECUTION_CONNECTION" then
+			elseif plug.output == false and plug.type ~= nodes.EXECUTION_CONNECTION then
 				plugsOnLeft = plugsOnLeft + 1
 				plugCount = plugCount + 1
 			end
-			if plug.output == false and plug.type == "EXECUTION_CONNECTION" then
+			if plug.output == false and plug.type == nodes.EXECUTION_CONNECTION then
 				love.graphics.setColor(r[plug.type]/256.0, g[plug.type]/256.0, b[plug.type]/256.0, 255/256.0)
 				love.graphics.circle("fill", 0, 0, 7, 30)
 				plug.posX, plug.posY = love.graphics.transformPoint(0, 0)
@@ -285,7 +285,7 @@ function drawAllNodes ()
 			local radiansPerPlug = math.pi*2 / plugCount
 			local plugsDrawn = 1
 			for l, plug in pairs(node.nodeInternal.plugs) do
-				if not (plug.type == "EXECUTION_CONNECTION" and plug.output == false) then
+				if not (plug.type == nodes.EXECUTION_CONNECTION and plug.output == false) then
 					local j = plugsDrawn
 					love.graphics.push()
 					love.graphics.rotate(math.pi/2)
@@ -329,7 +329,7 @@ function drawAllNodes ()
 					love.graphics.arc("line", "open", 0, 0, 32, abegin, aend, 30)
 					love.graphics.pop()		
 					plugsDrawnR = plugsDrawnR + 1
-				elseif plug.output == false and plug.type ~= "EXECUTION_CONNECTION" then
+				elseif plug.output == false and plug.type ~= nodes.EXECUTION_CONNECTION then
 					local j = plugsDrawnL
 					love.graphics.push()
 					love.graphics.rotate(math.pi/2)
