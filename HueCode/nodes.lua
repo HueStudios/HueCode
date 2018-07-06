@@ -1,8 +1,5 @@
 nodes = {}
 
--- Operators
--- Table operators
-
 nodes.VALUE_NODE = 0x1
 nodes.FUNCTION_NODE = 0x2
 nodes.RETURN_NODE = 0x3
