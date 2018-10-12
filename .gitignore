@@ -6,6 +6,7 @@ ShaderCache/
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
+/new-version/build/
 /Assets/AssetStoreTools*
 
 *.info
