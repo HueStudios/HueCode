@@ -11,4 +11,5 @@
     (var max-y (+ min-y height))
     (when (and (< x max-x) (< y max-y) (> x min-x) (> x max-x))
       (set inside true))
-    inside))
+    inside)
+  new-element)
