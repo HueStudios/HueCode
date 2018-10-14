@@ -1,12 +1,13 @@
 (local gui-manager (require :gui-manager))
 
 (defn gui-element [x y parent]
-  (local new-element {:x x :y y :depth (+ 1 (or parent.depth 0) :parent parent :children {})})
+  (local new-element {:x x :y y :depth 1 :parent parent :children {}})
   (defn new-element.get-global-x []
     new-element.x)
   (defn new-element.get-global-y []
     new-element.y)
   (when parent
+    (tset new-element depth (+ 1 parent.depth))
     (tset parent.children (+ 1 (# parent.children)) new-element)
     (defn new-element.get-global-x []
       (+ (new-element.parent.get-global-x) new-element.x))

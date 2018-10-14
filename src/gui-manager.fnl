@@ -3,9 +3,10 @@
 (var max-depth 1)
 (var min-depth 1)
 (defn gui-manager.register-element [to-register]
-  (tset to-register initialized false)
+  (tset to-register :initialized false)
   (var out-of-bounds false)
-  (when (> to-register.depth max-depth)
+  (print to-register.depth max-depth)
+  (when (>= to-register.depth max-depth)
     (set out-of-bounds true)
     (set max-depth to-register.depth)
     (tset elements (+ 1 (# elements)) to-register))
@@ -30,7 +31,7 @@
   (each [k v (ipairs elements)]
     (when (not v.initialized)
       (v.load)
-      (tset v initialized true))
+      (tset v :initialized true))
     (v.update dt)))
 
 (defn gui-manager.draw []
