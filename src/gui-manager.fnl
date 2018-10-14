@@ -8,7 +8,7 @@
   (when (> to-register.depth max-depth)
     (set out-of-bounds true)
     (set max-depth to-register.depth)
-    (tset elements (+ 1 (# elements) to-register)))
+    (tset elements (+ 1 (# elements)) to-register))
   (when (< to-register.depth min-depth)
     (set out-of-bounds true)
     (set min-depth to-register.depth)
