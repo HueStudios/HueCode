@@ -1,7 +1,9 @@
 (local color-scheme (require :color-scheme))
 (local gui-manager (require :gui-manager))
+(local gui-element-button (require :gui-element-button))
 
-(defn love.load [])
+(defn love.load []
+  (gui-element-button 20 20 nil 200 40 "Hue"))
 
 (defn love.update [dt]
   (gui-manager.update dt))
