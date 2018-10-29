@@ -1,6 +1,23 @@
 (local gui-manager-events {})
 (var previous-mouse-buttons {1 false 2 false 3 false})
 (var previous-mouse-over nil)
+
+(defn gui-manager-events.handle-wheel [elements dx dy]
+  (var mouse-captured nil)
+  (local mouse-x (love.mouse.getX))
+  (local mouse-y (love.mouse.getY))
+  (each [k v (ipairs elements)]
+    (var s (+ 1 (- (# elements) k)))
+    (var b (. elements s))
+    (when (not mouse-captured)
+      (when (b.is-inside? mouse-x mouse-y)
+        (set mouse-captured b)
+        (b.on-mouse-wheel
+          (- mouse-x (b.get-global-x))
+          (- mouse-y (b.get-global-y))
+          dx dy)))
+    (b.on-global-mouse-wheel mouse-x mouse-y dx dy)))
+
 (defn gui-manager-events.handle-events [elements]
   (var mouse-captured nil)
   (var mouse-buttons {})
