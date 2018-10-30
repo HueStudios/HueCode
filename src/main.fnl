@@ -12,4 +12,16 @@
   (love.graphics.clear color-scheme.background-color.r color-scheme.background-color.g color-scheme.background-color.b)
   (gui-manager.draw))
 
+(defn love.keypressed [key scancode repeat]
+  (gui-manager.capture-keyboard-events :pressed key scancode repeat))
+
+(defn love.keyreleased [key scancode repeat]
+  (gui-manager.capture-keyboard-events :released key scancode repeat))
+
+(defn love.wheelmoved [dx dy]
+  (gui-manager.capture-mouse-wheel dx dy))
+
+(defn love.textinput [text]
+  (gui-manager.capture-text-input text))
+
 nil

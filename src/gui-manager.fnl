@@ -29,6 +29,19 @@
     (set elements new-elements)))
 
 
+(defn gui-manager.capture-keyboard-events [type key code repeat]
+  (if (= type :press)
+    (gui-manager-events.handle-key-pressed elements key code repeat)
+    (gui-manager-events.handle-key-released elements key code repeat)))
+
+(defn gui-manager.capture-text-input [text]
+  (gui-manager-events.handle-text-input elements text))
+
+(defn gui-manager.capture-mouse-wheel [dx dy]
+  (gui-manager-events.handle-wheel dx dy))
+
+(defn gui-manager.)
+
 (defn gui-manager.update [dt]
   (each [k v (ipairs elements)]
     (when (not v.initialized)

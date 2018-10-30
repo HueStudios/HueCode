@@ -18,6 +18,24 @@
           dx dy)))
     (b.on-global-mouse-wheel mouse-x mouse-y dx dy)))
 
+(defn gui-manager-events.handle-key-pressed [elements key code repeat]
+  (each [k v (ipairs elements)]
+    (var s (+ 1 (- (# elements) k)))
+    (var b (. elements s))
+    (b.on-key-pressed-global key code repeat)))
+
+(defn gui-manager-events.handle-key-released [elements key code repeat]
+  (each [k v (ipairs elements)]
+    (var s (+ 1 (- (# elements) k)))
+    (var b (. elements s))
+    (b.on-key-released-global key code repeat)))
+
+(defn gui-manager-events.handle-text-input [elements text]
+  (each [k v (ipairs elements)]
+    (var s (+ 1 (- (# elements) k)))
+    (var b (. elements s))
+    (b.on-text-input-global key code repeat)))
+
 (defn gui-manager-events.handle-events [elements]
   (var mouse-captured nil)
   (var mouse-buttons {})
