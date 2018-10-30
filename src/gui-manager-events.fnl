@@ -49,7 +49,6 @@
     (var s (+ 1 (- (# elements) k)))
     (var b (. elements s))
     (when (not mouse-captured)
-      (print mouse-x mouse-y)
       (when (b.is-inside? mouse-x mouse-y)
         (set mouse-captured b)
         (if (= previous-mouse-over b)
@@ -90,7 +89,8 @@
       (when (not (previous-mouse-over.is-inside? mouse-x mouse-y))
         (previous-mouse-over.on-mouse-leave
           (- mouse-x (previous-mouse-over.get-global-x))
-          (- mouse-y (previous-mouse-over.get-global-y)))))
+          (- mouse-y (previous-mouse-over.get-global-y)))
+        (set previous-mouse-over nil)))
     (set previous-mouse-buttons mouse-buttons)))
 
 gui-manager-events

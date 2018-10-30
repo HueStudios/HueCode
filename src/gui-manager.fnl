@@ -6,7 +6,6 @@
 (defn gui-manager.register-element [to-register]
   (tset to-register :initialized false)
   (var out-of-bounds false)
-  (print to-register.depth max-depth)
   (when (>= to-register.depth max-depth)
     (set out-of-bounds true)
     (set max-depth to-register.depth)
