@@ -40,8 +40,6 @@
 (defn gui-manager.capture-mouse-wheel [dx dy]
   (gui-manager-events.handle-wheel dx dy))
 
-(defn gui-manager.)
-
 (defn gui-manager.update [dt]
   (each [k v (ipairs elements)]
     (when (not v.initialized)
