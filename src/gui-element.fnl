@@ -7,7 +7,7 @@
   (defn new-element.get-global-y []
     new-element.y)
   (when parent
-    (tset new-element depth (+ 1 parent.depth))
+    (tset new-element new-element.depth (+ 1 parent.depth))
     (tset parent.children (+ 1 (# parent.children)) new-element)
     (defn new-element.get-global-x []
       (+ (new-element.parent.get-global-x) new-element.x))
