@@ -1,4 +1,4 @@
-(local color-scheme (require :color-scheme))
+(local gui-color-scheme (require :gui-color-scheme))
 (local gui-manager (require :gui-manager))
 (local gui-element-button (require :gui-element-button))
 
@@ -10,7 +10,7 @@
   (gui-manager.update dt))
 
 (defn love.draw []
-  (love.graphics.clear color-scheme.background-color.r color-scheme.background-color.g color-scheme.background-color.b)
+  (love.graphics.clear gui-color-scheme.background-color.r gui-color-scheme.background-color.g gui-color-scheme.background-color.b)
   (gui-manager.draw))
 
 (defn love.keypressed [key scancode repeat]
