@@ -1,6 +1,10 @@
 (local gui-color-scheme {})
-(tset gui-color-scheme :background-color {:r (/ 36 255) :g (/ 36 255) :b (/ 36 255)})
-(tset gui-color-scheme :container        {:r (/ 79 255) :g (/ 79 255) :b (/ 79 255)})
+(tset gui-color-scheme :background-color
+  {:r (/ 36 255) :g (/ 36 255) :b (/ 36 255)})
+(tset gui-color-scheme :container
+  {:r (/ 79 255) :g (/ 79 255) :b (/ 79 255)})
+(tset gui-color-scheme :text
+  {:r (/ 207 255) :g (/ 207 255) :b (/ 207 255)})
 (defn gui-color-scheme.set-color [name alpha]
   (if (. gui-color-scheme name)
     (do
