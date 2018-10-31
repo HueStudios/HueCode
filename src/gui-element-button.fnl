@@ -1,8 +1,11 @@
 (local gui-element-rectangular (require :gui-element-rectangular))
+(local gui-element-label (require :gui-element-label))
 (local gui-color-scheme (require :gui-color-scheme))
 (defn gui-element-button [x y parent width height text]
   (var new-element (gui-element-rectangular x y parent width height))
   (tset new-element :mouse-over false)
+  (when text
+    (gui-element-label 0 0 new-element width height text :center))
   (defn new-element.draw []
     (love.graphics.push)
     (if (= new-element.mouse-over true)
