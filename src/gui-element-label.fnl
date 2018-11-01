@@ -6,7 +6,6 @@
   (tset new-element :text text)
   (defn new-element.is-inside? [])
   (defn new-element.draw []
-    (love.graphics.push)
     (gui-color-scheme.set-color :text 1)
     (local font (love.graphics.getFont))
     (local w new-element.width)
@@ -19,6 +18,5 @@
     (local y (- (+ (new-element.get-global-y) (/ h 2)) (/ content-height 2)))
     (local a new-element.align)
     (local text new-element.text)
-    (love.graphics.printf text x y w a)
-    (love.graphics.pop))
+    (love.graphics.printf text x y w a))
   new-element)

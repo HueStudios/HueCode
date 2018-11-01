@@ -7,12 +7,10 @@
   (when text
     (gui-element-label 0 0 new-element width height text :center))
   (defn new-element.draw []
-    (love.graphics.push)
     (if (= new-element.mouse-over true)
       (gui-color-scheme.set-color :container 1)
       (gui-color-scheme.set-color :container 0.2))
-    (love.graphics.rectangle :fill (new-element.get-global-x) (new-element.get-global-y) new-element.width new-element.height)
-    (love.graphics.pop))
+    (love.graphics.rectangle :fill (new-element.get-global-x) (new-element.get-global-y) new-element.width new-element.height))
   (defn new-element.on-mouse-enter [x y]
     (tset new-element :mouse-over true))
   (defn new-element.on-mouse-leave [x y]

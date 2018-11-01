@@ -50,6 +50,8 @@
 
 (defn gui-manager.draw []
   (each [k v (ipairs elements)]
-    (v.draw)))
+    (love.graphics.push)
+    (v.draw)
+    (love.graphics.pop)))
 
 gui-manager
