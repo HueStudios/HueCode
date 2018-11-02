@@ -1,5 +1,6 @@
 (local gui-element-rectangular (require :gui-element-rectangular))
 (local gui-color-scheme (require :gui-color-scheme))
+(local gui-font (require :gui-font))
 (defn gui-element-label [x y parent width height text align]
   (var new-element (gui-element-rectangular x y parent width height))
   (tset new-element :align align)
@@ -7,6 +8,7 @@
   (defn new-element.is-inside? [])
   (defn new-element.draw []
     (gui-color-scheme.set-color :text 1)
+    (gui-font.set-font :content)
     (local font (love.graphics.getFont))
     (local w new-element.width)
     (local h new-element.height)
