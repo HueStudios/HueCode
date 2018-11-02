@@ -50,7 +50,8 @@
     (var b (. elements s))
     (when (not mouse-captured)
       (when (b.is-inside? mouse-x mouse-y)
-        (set mouse-captured b)
+        (when b
+          (set mouse-captured b))
         (if (= previous-mouse-over b)
           (b.on-mouse-hover
             (- mouse-x (b.get-global-x))
@@ -63,34 +64,40 @@
             (b.on-mouse-enter
               (- mouse-x (b.get-global-x))
               (- mouse-y (b.get-global-y)))
-            (set previous-mouse-over b)))))
+            (set previous-mouse-over b))))))
+  (each [k v (ipairs elements)]
+    (var s (+ 1 (- (# elements) k)))
+    (var b (. elements s))
     (each [i n (ipairs mouse-buttons)]
-      (when (and (. previous-mouse-buttons i) n)
-        (b.on-mouse-global-drag mouse-x mouse-y n)
+      (local previous-button (. previous-mouse-buttons i))
+      (when (and previous-button n)
+        (b.on-mouse-global-drag mouse-x mouse-y i)
         (when (= b mouse-captured)
           (b.on-mouse-drag
             (- mouse-x (b.get-global-x))
             (- mouse-y (b.get-global-y))
-            n)))
-      (when (and (. previous-mouse-buttons i) (not n))
-        (b.on-mouse-global-up mouse-x mouse-y n)
+            i)))
+      (when (and previous-button (not n))
+        (b.on-mouse-global-up mouse-x mouse-y i)
         (when (= b mouse-captured)
           (b.on-mouse-up
             (- mouse-x (b.get-global-x))
             (- mouse-y (b.get-global-y))
-            n)))
-      (when (and (not (. previous-mouse-buttons i)) n)
-        (b.on-mouse-global-down mouse-x mouse-y n)
+            i)))
+      (when (and (not previous-button) n)
+        (b.on-mouse-global-down mouse-x mouse-y i)
         (when (= b mouse-captured)
           (b.on-mouse-down
             (- mouse-x (b.get-global-x))
-            (- mouse-y (b.get-global-y))))))
-    (when previous-mouse-over
-      (when (not (previous-mouse-over.is-inside? mouse-x mouse-y))
-        (previous-mouse-over.on-mouse-leave
-          (- mouse-x (previous-mouse-over.get-global-x))
-          (- mouse-y (previous-mouse-over.get-global-y)))
-        (set previous-mouse-over nil)))
-    (set previous-mouse-buttons mouse-buttons)))
+            (- mouse-y (b.get-global-y))
+            i)))))
+  (when previous-mouse-over
+    (when (not (previous-mouse-over.is-inside? mouse-x mouse-y))
+      (previous-mouse-over.on-mouse-leave
+        (- mouse-x (previous-mouse-over.get-global-x))
+        (- mouse-y (previous-mouse-over.get-global-y)))
+      (set previous-mouse-over nil)))
+  (for [mouse-button 1 3]
+    (tset previous-mouse-buttons mouse-button (. mouse-buttons mouse-button))))
 
 gui-manager-events
