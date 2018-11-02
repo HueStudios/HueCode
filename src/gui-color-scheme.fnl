@@ -1,11 +1,19 @@
 (local gui-color-scheme {})
 (tset gui-color-scheme :background-color
-  {:r (/ 36 255) :g (/ 36 255) :b (/ 36 255)})
+  {:r (/ 38 255) :g (/ 38 255) :b (/ 38 255)})
 (tset gui-color-scheme :container
-  {:r (/ 79 255) :g (/ 79 255) :b (/ 79 255)})
+  {:r (/ 43 255) :g (/ 43 255) :b (/ 43 255)})
+(tset gui-color-scheme :top-element
+  {:r (/ 56 255) :g (/ 56 255) :b (/ 56 255)})
+(tset gui-color-scheme :top-element-hover
+  {:r (/ 60 255) :g (/ 60 255) :b (/ 60 255)})
+(tset gui-color-scheme :top-element-click
+  {:r (/ 99 255) :g (/ 99 255) :b (/ 99 255)})
 (tset gui-color-scheme :text
   {:r (/ 207 255) :g (/ 207 255) :b (/ 207 255)})
 (defn gui-color-scheme.set-color [name alpha]
+  (when (= alpha nil)
+    (var alpha 1))
   (if (. gui-color-scheme name)
     (do
       (local r (. gui-color-scheme name :r))
