@@ -3,7 +3,8 @@
 (local gui-element-button (require :gui-element-button))
 
 (defn love.load []
-  (gui-element-button 20 20 nil 200 40 "This is a test to see wether or not the labels actually wrap text and also the cake is a lie")
+  (gui-manager.initialize)
+  (gui-element-button 20 20 nil 200 40 "This is a test")
   (gui-element-button 220 20 nil 200 40 "Hue"))
 (defn love.update [dt]
   (gui-manager.update dt))

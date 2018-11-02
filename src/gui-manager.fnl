@@ -1,5 +1,6 @@
 (local gui-manager {})
 (local gui-manager-events (require :gui-manager-events))
+(local gui-font (require :gui-font))
 (var elements {})
 (var max-depth 1)
 (var min-depth 1)
@@ -27,6 +28,8 @@
       (tset new-elements (+ 1 (# elements)) v))
     (set elements new-elements)))
 
+(defn gui-manager.initialize []
+  (gui-font.load-fonts))
 
 (defn gui-manager.capture-keyboard-events [type key code repeat]
   (if (= type :press)
