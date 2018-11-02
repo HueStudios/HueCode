@@ -12,9 +12,11 @@
     (defn new-element.get-global-x []
       (+ (new-element.parent.get-global-x) new-element.x))
     (defn new-element.get-global-y []
-      (+ (new-element.parent.get-global-y) new-element.y)))
+      (+ (new-element.parent.get-global-y) new-element.y))
+    (parent.on-new-children new-element))
   (defn new-element.is-inside? [x y]
     false)
+  (defn new-element.on-new-children [children])
   (defn new-element.load [])
   (defn new-element.update [dt])
   (defn new-element.draw [])
