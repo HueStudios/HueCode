@@ -12,7 +12,11 @@
       (= new-element.mouse-hold true)
       (gui-color-scheme.set-color :top-element-click)
       (gui-color-scheme.set-color :top-element-hover))
-    (love.graphics.rectangle :fill (new-element.get-global-x) (new-element.get-global-y) new-element.width new-element.height))
+    (love.graphics.rectangle :fill
+      (new-element.get-global-x)
+      (new-element.get-global-y)
+      (new-element.get-width)
+      (new-element.get-height)))
   (defn new-element.on-mouse-enter [x y]
     (tset new-element :mouse-over true))
   (defn new-element.on-mouse-leave [x y]
