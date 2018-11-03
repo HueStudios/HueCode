@@ -1,11 +1,13 @@
 (local gui-color-scheme (require :gui-color-scheme))
 (local gui-manager (require :gui-manager))
 (local gui-element-button (require :gui-element-button))
+(local gui-element-view-relative (require :gui-element-view-relative))
 
 (defn love.load []
   (gui-manager.initialize)
-  (gui-element-button 20 20 nil 200 40 "This is a test")
-  (gui-element-button 220 20 nil 200 40 "Hue"))
+  (local view (gui-element-view-relative 20 20 nil 350 350))
+  (gui-element-button 20 20 view 200 40 "This is a test")
+  (gui-element-button 220 20 view 200 40 "Hue"))
 (defn love.update [dt]
   (gui-manager.update dt))
 
