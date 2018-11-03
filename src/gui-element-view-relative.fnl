@@ -20,6 +20,13 @@
       (love.graphics.setStencilTest)
       (love.graphics.stencil empty-stencil :replace 0 false))
     (tset child :draw new-draw)
+    (local temporal-is-inside? child.is-inside?)
+    (defn new-is-inside? [x y]
+      (local inside-element (temporal-is-inside? x y))
+      (local inside-view (new-element.is-inside? x y))
+      (local inside-both (and inside-element inside-view))
+      inside-both)
+    (tset child :is-inside? new-is-inside?)
     (print child))
   (defn new-element.update [dt]
     (when new-element.dirty-view
