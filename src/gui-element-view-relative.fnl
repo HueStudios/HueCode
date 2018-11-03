@@ -2,15 +2,24 @@
 (defn gui-element-button [x y parent width height]
   (var new-element (gui-element-rectangular x y parent width height))
   (tset new-element :dirty-view true)
-  (defn new-element.view-stencil-function []
+  (defn view-stencil-function []
     (love.graphics.rectangle :fill
       (new-element.get-global-x)
       (new-element.get-global-y)
       (new-element.get-width)
       (new-element.get-height)))
+  (defn empty-stencil [])
   (defn new-element.on-new-children [children]
     (tset new-element :dirty-view true))
   (defn decorate-child [child]
+    (local temporal-draw child.draw)
+    (defn new-draw []
+      (love.graphics.stencil view-stencil-function :increment 1 true)
+      (love.graphics.setStencilTest :greater 0)
+      (temporal-draw)
+      (love.graphics.setStencilTest)
+      (love.graphics.stencil empty-stencil :replace 0 false))
+    (tset child :draw new-draw)
     (print child))
   (defn new-element.update [dt]
     (when new-element.dirty-view
@@ -34,6 +43,7 @@
                 (decorate-child v)
                 (tset v.decorated (+ 1 (# v.decorated)) new-element)))
           (do
+            (decorate-child v)
             (tset v :decorated {})
             (tset v.decorated 1 new-element))))))
   new-element)
