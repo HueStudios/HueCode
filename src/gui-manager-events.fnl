@@ -70,6 +70,13 @@
     (var b (. elements s))
     (each [i n (ipairs mouse-buttons)]
       (local previous-button (. previous-mouse-buttons i))
+      (when (and (not previous-button) n)
+        (b.on-mouse-global-down mouse-x mouse-y i)
+        (when (= b mouse-captured)
+          (b.on-mouse-down
+            (- mouse-x (b.get-global-x))
+            (- mouse-y (b.get-global-y))
+            i)))
       (when (and previous-button n)
         (b.on-mouse-global-drag mouse-x mouse-y i)
         (when (= b mouse-captured)
@@ -81,13 +88,6 @@
         (b.on-mouse-global-up mouse-x mouse-y i)
         (when (= b mouse-captured)
           (b.on-mouse-up
-            (- mouse-x (b.get-global-x))
-            (- mouse-y (b.get-global-y))
-            i)))
-      (when (and (not previous-button) n)
-        (b.on-mouse-global-down mouse-x mouse-y i)
-        (when (= b mouse-captured)
-          (b.on-mouse-down
             (- mouse-x (b.get-global-x))
             (- mouse-y (b.get-global-y))
             i)))))
