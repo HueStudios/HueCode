@@ -2,6 +2,8 @@
 (defn gui-element-button [x y parent width height]
   (var new-element (gui-element-rectangular x y parent width height))
   (tset new-element :dirty-view true)
+  (tset new-element :offset-x 0)
+  (tset new-element :offset-y 0)
   (defn view-stencil-function []
     (love.graphics.rectangle :fill
       (new-element.get-global-x)
@@ -27,7 +29,17 @@
       (local inside-both (and inside-element inside-view))
       inside-both)
     (tset child :is-inside? new-is-inside?)
-    (print child))
+    (when (= child.parent new-element)
+      (local temporal-get-global-x child.get-global-x)
+      (defn new-get-global-x []
+        (local global-x (+ (temporal-get-global-x) new-element.offset-x))
+        global-x)
+      (tset child :get-global-x new-get-global-x)
+      (local temporal-get-global-y child.get-global-y)
+      (defn new-get-global-y []
+        (local global-y (+ (temporal-get-global-y) new-element.offset-y))
+        global-y)
+      (tset child :get-global-y new-get-global-y)))
   (defn new-element.update [dt]
     (when new-element.dirty-view
       (tset new-element :dirty-view false)

@@ -5,7 +5,7 @@
 
 (defn love.load []
   (gui-manager.initialize)
-  (local view (gui-element-view-relative 20 20 nil 350 350))
+  (local view (gui-element-view-relative 20 20 nil 500 500))
   (gui-element-button 20 20 view 200 40 "This is a test")
   (gui-element-button 220 20 view 200 40 "Hue"))
 (defn love.update [dt]
