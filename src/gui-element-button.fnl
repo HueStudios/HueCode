@@ -7,12 +7,13 @@
   (gui-element-make-interactable new-element)
   (when text
     (gui-element-label 0 0 new-element width height text :center))
-  (defn new-element.draw []
-    (if (= new-element.mouse-over false)
-      (gui-color-scheme.set-color :top-element)
-      (= new-element.mouse-hold true)
-      (gui-color-scheme.set-color :top-element-click)
-      (gui-color-scheme.set-color :top-element-hover))
+  (defn new-element.idle-draw []
+    (gui-color-scheme.set-color :top-element))
+  (defn new-element.down-draw []
+    (gui-color-scheme.set-color :top-element-click))
+  (defn new-element.over-draw []
+    (gui-color-scheme.set-color :top-element-hover))
+  (defn new-element.post-draw []
     (love.graphics.rectangle :fill
       (new-element.get-global-x)
       (new-element.get-global-y)
