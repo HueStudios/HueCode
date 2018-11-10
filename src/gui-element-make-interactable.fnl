@@ -15,7 +15,7 @@
     (temp-down x y button)
     (when (= button 1)
       (tset new-element :mouse-hold true)))
-  (defn new-element.on-mouse-global-up [x y button]
+  (defn new-element.on-mouse-global-up [x y button local-x local-y]
     (temp-global-up x y button)
     (when (= button 1)
       (tset new-element :mouse-hold false)))
