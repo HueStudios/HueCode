@@ -2,14 +2,14 @@
 (local gui-manager (require :gui-manager))
 (local gui-element-button (require :gui-element-button))
 (local gui-element-view-relative (require :gui-element-view-relative))
-(local gui-element-arc (require :gui-element-arc))
+(local gui-element-node-core (require :gui-element-node-core))
 
 (defn love.load []
   (gui-manager.initialize)
   (local view (gui-element-view-relative 20 20 nil 500 500))
   (gui-element-button 20 20 view 200 40 "This is a test")
   (gui-element-button 220 20 view 200 40 "Hue")
-  (gui-element-arc 300 300 nil 200 0 0 3))
+  (gui-element-node-core 200 200 nil))
 (defn love.update [dt]
   (gui-manager.update dt))
 
