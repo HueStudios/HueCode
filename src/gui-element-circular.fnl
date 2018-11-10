@@ -10,9 +10,9 @@
   (defn new-element.is-inside? [x y]
     (var inside false)
     (local dxs (* (- new-element.x x) (- new-element.x x)))
-    (local dys (* (- new-element.y y) (- new-element.x y)))
+    (local dys (* (- new-element.y y) (- new-element.y y)))
     (local distance (math.sqrt (+ dxs dys)))
-    (set inside (and (< distance radius) (> distance inner-radius)))
+    (set inside (and (< distance radius) (>= distance inner-radius)))
     ;(print inner-radius distance radius inside)
     inside)
   new-element)
