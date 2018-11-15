@@ -76,7 +76,8 @@
           mouse-y
           i
           (- mouse-x (b.get-global-x))
-          (- mouse-y (b.get-global-y)))
+          (- mouse-y (b.get-global-y))
+          (= b mouse-captured))
         (when (= b mouse-captured)
           (b.on-mouse-down
             (- mouse-x (b.get-global-x))
@@ -88,7 +89,8 @@
           mouse-y
           i
           (- mouse-x (b.get-global-x))
-          (- mouse-y (b.get-global-y)))
+          (- mouse-y (b.get-global-y))
+          (= b mouse-captured))
         (when (= b mouse-captured)
           (b.on-mouse-drag
             (- mouse-x (b.get-global-x))
@@ -100,7 +102,8 @@
           mouse-y
           i
           (- mouse-x (b.get-global-x))
-          (- mouse-y (b.get-global-y)))
+          (- mouse-y (b.get-global-y))
+          (= b mouse-captured))
         (when (= b mouse-captured)
           (b.on-mouse-up
             (- mouse-x (b.get-global-x))
