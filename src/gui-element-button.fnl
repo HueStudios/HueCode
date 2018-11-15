@@ -13,7 +13,9 @@
     (gui-color-scheme.set-color :top-element-click))
   (defn new-element.over-draw []
     (gui-color-scheme.set-color :top-element-hover))
-  (defn new-element.post-draw []
+  (local temp-draw new-element.draw)
+  (defn new-element.draw []
+    (temp-draw)
     (love.graphics.rectangle :fill
       (new-element.get-global-x)
       (new-element.get-global-y)
