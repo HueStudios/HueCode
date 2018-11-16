@@ -17,7 +17,7 @@
             (- mouse-x (b.get-global-x))
             (- mouse-y (b.get-global-y))
             dx dy)))
-      (b.on-global-mouse-wheel mouse-x mouse-y dx dy))))
+      (b.on-mouse-global-wheel mouse-x mouse-y dx dy))))
 
 (defn gui-manager-events.handle-key-pressed [elements key code repeat]
   (each [k v (ipairs elements)]
@@ -38,7 +38,7 @@
     (var s (+ 1 (- (# elements) k)))
     (var b (. elements s))
     (when b.enabled
-      (b.on-text-input-global key code repeat))))
+      (b.on-text-input-global text))))
 
 (defn gui-manager-events.handle-events [elements]
   (var mouse-captured nil)
