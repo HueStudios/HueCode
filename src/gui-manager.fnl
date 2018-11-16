@@ -32,7 +32,7 @@
   (gui-font.load-fonts))
 
 (defn gui-manager.capture-keyboard-events [type key code repeat]
-  (if (= type :press)
+  (if (= type :pressed)
     (gui-manager-events.handle-key-pressed elements key code repeat)
     (gui-manager-events.handle-key-released elements key code repeat)))
 
@@ -40,7 +40,7 @@
   (gui-manager-events.handle-text-input elements text))
 
 (defn gui-manager.capture-mouse-wheel [dx dy]
-  (gui-manager-events.handle-wheel dx dy))
+  (gui-manager-events.handle-wheel elements dx dy))
 
 (defn gui-manager.update [dt]
   (each [k v (ipairs elements)]
