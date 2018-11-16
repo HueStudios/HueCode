@@ -4,9 +4,15 @@
   (defn new-element.on-mouse-global-down [x y button local-x local-y inside]
     (temp-global-down x y button local-x local-y inside)
     (when (= button 1)
+      (when (and new-element.selected (not inside))
+        (new-element.on-deselect))
+      (when (and (not new-element.selected) inside)
+        (new-element.on-select))
       (tset new-element :selected inside)))
   (defn new-element.selected-draw [])
   (defn new-element.unselected-draw [])
+  (defn new-element.on-select [])
+  (defn new-element.on-deselect [])
   (local temp-draw new-element.draw)
   (defn new-element.draw []
     (temp-draw)
