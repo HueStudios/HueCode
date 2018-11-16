@@ -5,9 +5,10 @@
   (var new-element (gui-element-rectangular x y parent width height))
   (tset new-element :align align)
   (tset new-element :text text)
+  (tset new-element :color :text)
   (defn new-element.is-inside? [])
   (defn new-element.draw []
-    (gui-color-scheme.set-color :text 1)
+    (gui-color-scheme.set-color new-element.color 1)
     (gui-font.set-font :content)
     (local font (love.graphics.getFont))
     (local w (new-element.get-width))
@@ -15,10 +16,11 @@
     (local x (new-element.get-global-x))
     (local line-height (: font :getHeight))
     (var content-height 0)
-    (let [(width lines) (: font :getWrap text w)]
+    (let [(width lines) (: font :getWrap new-element.text w)]
       (set content-height (* (# lines) line-height)))
     (local y (- (+ (new-element.get-global-y) (/ h 2)) (/ content-height 2)))
     (local a new-element.align)
     (local text new-element.text)
-    (love.graphics.printf text x y w a))
+    ;(love.graphics.rectangle :fill x (new-element.get-global-y) new-element.width new-element.height)
+    (love.graphics.printf new-element.text x y w a))
   new-element)
