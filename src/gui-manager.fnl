@@ -44,17 +44,19 @@
 
 (defn gui-manager.update [dt]
   (each [k v (ipairs elements)]
-    (when (not v.initialized)
-      (v.load)
-      (tset v :initialized true))
-    (v.update dt))
+    (when v.enabled
+      (when (not v.initialized)
+        (v.load)
+        (tset v :initialized true))
+      (v.update dt)))
   (gui-manager-events.handle-events elements))
 
 
 (defn gui-manager.draw []
   (each [k v (ipairs elements)]
-    (love.graphics.push)
-    (v.draw)
-    (love.graphics.pop)))
+    (when v.enabled
+      (love.graphics.push)
+      (v.draw)
+      (love.graphics.pop))))
 
 gui-manager
